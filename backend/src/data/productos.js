@@ -1,0 +1,151 @@
+// src/data/productos.js
+// Datos de los productos de Hermanos Jota — fuente de verdad del backend
+
+const productos = [
+  {
+    id: 1,
+    nombre: "Sofá Patagonia",
+    precio: 185000,
+    categoria: "Sofás y Sillones",
+    descripcion:
+      "Un abrazo hecho mueble. El Sofá Patagonia combina estructura de algarrobo macizo con tapizado en lana natural merino. Diseñado para durar décadas, envejeciendo con gracia y carácter. Cada costura cuenta la historia de manos expertas.",
+    materiales: ["Algarrobo macizo", "Lana natural merino", "Cera de abejas"],
+    dimensiones: "220cm × 90cm × 80cm",
+    imagen: "/imagenes/sofa-patagonia.png",
+    destacado: true,
+    stock: 3,
+  },
+  {
+    id: 2,
+    nombre: "Sillón Copacabana",
+    precio: 98000,
+    categoria: "Sofás y Sillones",
+    descripcion:
+      "Inspirado en la época dorada del diseño latinoamericano de los años 60. El Sillón Copacabana tiene patas cónicas de quebracho y asiento ergonómico con acabado en aceite de lino puro. Perfecto para una lectura tranquila o una charla de café.",
+    materiales: ["Quebracho blanco", "Tapizado de algodón orgánico", "Aceite de lino"],
+    dimensiones: "80cm × 75cm × 85cm",
+    imagen: "/imagenes/sillon-copacabana.png",
+    destacado: true,
+    stock: 5,
+  },
+  {
+    id: 3,
+    nombre: "Butaca Mendoza",
+    precio: 72000,
+    categoria: "Sofás y Sillones",
+    descripcion:
+      "Elegancia que no intimida. La Butaca Mendoza es la compañera ideal de un escritorio o una mesa de comedor. Su estructura de caldén y el tapizado de lino natural crean una pieza que se integra con armonía en cualquier espacio.",
+    materiales: ["Caldén", "Lino natural", "Tintes vegetales base agua"],
+    dimensiones: "55cm × 60cm × 90cm",
+    imagen: "/imagenes/butaca-mendoza.png",
+    destacado: false,
+    stock: 8,
+  },
+  {
+    id: 4,
+    nombre: "Mesa Comedor Pampa",
+    precio: 145000,
+    categoria: "Mesas",
+    descripcion:
+      "La mesa alrededor de la cual se construyen las historias. La Mesa Comedor Pampa tiene tablero de algarrobo recuperado con vetas únicas e irrepetibles. Una pieza que convierte cada comida en un ritual.",
+    materiales: ["Algarrobo recuperado", "Aceite de lino prensado en frío"],
+    dimensiones: "180cm × 90cm × 76cm",
+    imagen: "/imagenes/mesa-comedor-pampa.png",
+    destacado: true,
+    stock: 2,
+  },
+  {
+    id: 5,
+    nombre: "Mesa de Centro Araucaria",
+    precio: 58000,
+    categoria: "Mesas",
+    descripcion:
+      "El punto de encuentro de la sala. La Mesa de Centro Araucaria tiene patas en ángulo inspiradas en el diseño escandinavo de los 60 y un tablero de madera nativa con acabado natural. Un clásico sin pretensiones.",
+    materiales: ["Pino araucaria FSC", "Cera de abejas local"],
+    dimensiones: "110cm × 60cm × 42cm",
+    imagen: "/imagenes/mesa-centro-araucaria.png",
+    destacado: false,
+    stock: 6,
+  },
+  {
+    id: 6,
+    nombre: "Mesa de Noche Aconcagua",
+    precio: 34000,
+    categoria: "Mesas",
+    descripcion:
+      "Pequeña en tamaño, grande en carácter. La Mesa de Noche Aconcagua tiene una gaveta con corredera de madera maciza y un estante inferior abierto. Acabado en aceite de lino que resalta la textura natural del algarrobo.",
+    materiales: ["Algarrobo macizo", "Aceite de lino"],
+    dimensiones: "45cm × 40cm × 55cm",
+    imagen: "/imagenes/mesa-noche-aconcagua.png",
+    destacado: false,
+    stock: 10,
+  },
+  {
+    id: 7,
+    nombre: "Biblioteca Recoleta",
+    precio: 112000,
+    categoria: "Almacenamiento",
+    descripcion:
+      "El hogar perfecto para tus libros y recuerdos. La Biblioteca Recoleta tiene cinco estantes de distintas alturas que permiten una composición personalizada. Construida en quebracho con acabado en cera de abejas para máxima durabilidad.",
+    materiales: ["Quebracho blanco", "Cera de abejas certificada"],
+    dimensiones: "120cm × 35cm × 200cm",
+    imagen: "/imagenes/biblioteca-recoleta.png",
+    destacado: true,
+    stock: 4,
+  },
+  {
+    id: 8,
+    nombre: "Aparador Uspallata",
+    precio: 135000,
+    categoria: "Almacenamiento",
+    descripcion:
+      "Funcional con gracia. El Aparador Uspallata tiene tres cajones amplios y dos puertas con bisagras de latón. La madera de algarrobo con tinte vegetal tostado le da una presencia cálida y refinada en cualquier comedor o living.",
+    materiales: ["Algarrobo macizo", "Tintes vegetales", "Herrajes de latón"],
+    dimensiones: "150cm × 45cm × 85cm",
+    imagen: "/imagenes/aparador-uspallata.png",
+    destacado: false,
+    stock: 3,
+  },
+  {
+    id: 9,
+    nombre: "Escritorio Costa",
+    precio: 88000,
+    categoria: "Escritorios",
+    descripcion:
+      "Un espacio para crear. El Escritorio Costa tiene una superficie generosa de caldén macizo y dos cajones laterales con división interior. El acabado en aceite de lino protege la madera y la hace más bella con cada uso.",
+    materiales: ["Caldén", "Aceite de lino prensado en frío"],
+    dimensiones: "140cm × 70cm × 76cm",
+    imagen: "/imagenes/escritorio-costa.png",
+    destacado: true,
+    stock: 5,
+  },
+  {
+    id: 10,
+    nombre: "Silla de Trabajo Belgrano",
+    precio: 42000,
+    categoria: "Sillas",
+    descripcion:
+      "Comodidad con conciencia. La Silla de Trabajo Belgrano tiene asiento ergonómico acolchado con tapizado de algodón orgánico y respaldo bajo de madera con curvatura estudiada para largas jornadas de trabajo.",
+    materiales: ["Algarrobo", "Algodón orgánico certificado", "Cera de abejas"],
+    dimensiones: "50cm × 55cm × 90cm",
+    imagen: "/imagenes/silla-trabajo-belgrano.png",
+    destacado: false,
+    stock: 12,
+  },
+  {
+    id: 11,
+    nombre: "Sillas Córdoba",
+    precio: 28000,
+    categoria: "Sillas",
+    descripcion:
+      "Cuatro para la mesa, cien para el alma. Las Sillas Córdoba son el complemento perfecto para la Mesa Pampa o cualquier mesa de comedor. Livianas pero robustas, con asiento tejido en junco natural.",
+    materiales: ["Quebracho blanco", "Junco natural"],
+    dimensiones: "45cm × 42cm × 88cm",
+    imagen: "/imagenes/sillas-cordoba.png",
+    destacado: false,
+    stock: 20,
+    precioUnidad: true,
+  },
+];
+
+module.exports = productos;

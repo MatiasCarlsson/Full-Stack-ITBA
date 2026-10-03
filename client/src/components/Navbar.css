@@ -1,0 +1,144 @@
+/* components/Navbar.css */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(160, 82, 45, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgba(61, 43, 31, 0.2);
+  border-bottom: 1px solid rgba(245, 230, 211, 0.12);
+}
+
+.navbar__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+
+/* Logo */
+.navbar__logo {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: opacity var(--transicion);
+  text-align: left;
+}
+.navbar__logo:hover { opacity: 0.85; }
+
+.navbar__logo img {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.navbar__brand-name {
+  font-family: var(--font-secundaria);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-alabastro);
+  letter-spacing: 0.04em;
+}
+
+/* Nav links */
+.navbar__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.navbar__link {
+  background: none;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(245,230,211,0.85);
+  border-radius: var(--radio);
+  transition: background var(--transicion), color var(--transicion);
+}
+.navbar__link:hover,
+.navbar__link--active {
+  background-color: rgba(255,255,255,0.12);
+  color: var(--color-alabastro);
+}
+
+/* Carrito */
+.navbar__carrito {
+  position: relative;
+  background: none;
+  border: 2px solid rgba(245,230,211,0.5);
+  border-radius: 50px;
+  padding: 0.4rem 1rem 0.4rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-alabastro);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: border-color var(--transicion), background var(--transicion);
+  cursor: pointer;
+}
+.navbar__carrito:hover {
+  background-color: rgba(255,255,255,0.12);
+  border-color: var(--color-alabastro);
+}
+
+.navbar__carrito-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-alabastro);
+}
+
+.navbar__carrito-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--color-vara-de-oro);
+  color: var(--color-texto);
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pop 0.2s ease;
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.5); }
+  70%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 640px) {
+  .navbar__inner {
+    padding: 0 0.85rem;
+    height: 60px;
+  }
+  .navbar__logo img { height: 28px; }
+  .navbar__brand-name { font-size: 1rem; }
+  .navbar__link {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.75rem;
+  }
+  .navbar__carrito {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
+  }
+  .navbar__carrito-txt { display: none; }
+}
