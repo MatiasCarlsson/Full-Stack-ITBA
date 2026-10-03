@@ -1,0 +1,54 @@
+{
+  "project": "Hermanos Jota",
+  "version": "1.0.0",
+  "brand": {
+    "name": "Hermanos Jota — Mueblería de Autor",
+    "origin": "Buenos Aires, Argentina",
+    "voice": "Artesanal, atemporal, noble, arquitectónico y sustentable",
+    "aesthetic": "Mid-Century Rioplatense, acabados al aceite natural, maderas nativas certificadas FSC"
+  },
+  "designSystem": {
+    "colors": {
+      "primary": "#A0522D",
+      "primaryHover": "#7A3B1E",
+      "secondaryAccent": "#87A96B",
+      "surface": "#FDF6EE",
+      "background": "#F5E6D3",
+      "goldHighlight": "#D4A437",
+      "roseSoft": "#C47A6D",
+      "textPrimary": "#3D2B1F",
+      "textSecondary": "#7A6055",
+      "white": "#FFFFFF"
+    },
+    "typography": {
+      "display": {
+        "family": "Playfair Display, Georgia, serif",
+        "weights": [400, 700],
+        "usage": "Títulos principales, encabezados de ficha, nombres de marca"
+      },
+      "body": {
+        "family": "Inter, system-ui, sans-serif",
+        "weights": [300, 400, 500, 600, 700],
+        "usage": "Navegación, descripciones, especificaciones técnicas, precios, botones"
+      }
+    },
+    "geometry": {
+      "radius": "8px",
+      "radiusLarge": "16px",
+      "radiusPill": "50px",
+      "shadowDefault": "0 2px 12px rgba(160, 82, 45, 0.10)",
+      "shadowHover": "0 8px 28px rgba(160, 82, 45, 0.18)"
+    },
+    "iconography": {
+      "type": "SVG minimalista editorial (stroke 1.75px, linecap round)",
+      "emojis": false
+    }
+  },
+  "principles": [
+    "Priorizar materiales nobles y acabados táctiles sobre artificios digitales",
+    "Reemplazar pictogramas informales/emojis por iconografía vectorial de precisión arquitectónica",
+    "Garantizar ratios de contraste superiores a 4.5:1 (WCAG AA) y navegación accesible por teclado",
+    "Animaciones orgánicas y de baja aceleración con soporte para prefers-reduced-motion",
+    "Resiliencia ante fallos de servidor o cargas lentas con estados asistidos"
+  ]
+}
