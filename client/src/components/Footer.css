@@ -1,0 +1,78 @@
+/* components/Footer.css */
+
+.footer {
+  background-color: var(--color-texto);
+  color: var(--color-alabastro);
+  padding: 3rem 1.5rem 2rem;
+  margin-top: auto;
+}
+
+.footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+}
+
+.footer__brand-name {
+  font-family: var(--font-secundaria);
+  font-size: 1.4rem;
+  color: var(--color-vara-de-oro);
+  margin-bottom: 0.6rem;
+}
+
+.footer__brand-desc {
+  font-size: 0.875rem;
+  color: rgba(245,230,211,0.65);
+  line-height: 1.7;
+  max-width: 280px;
+}
+
+.footer__col-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-vara-de-oro);
+  margin-bottom: 1rem;
+}
+
+.footer__list li {
+  font-size: 0.875rem;
+  color: rgba(245,230,211,0.7);
+  margin-bottom: 0.45rem;
+}
+
+.footer__list li strong {
+  color: var(--color-alabastro);
+  font-weight: 500;
+}
+
+.footer__bottom {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(245,230,211,0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer__copy {
+  font-size: 0.8rem;
+  color: rgba(245,230,211,0.45);
+}
+
+.footer__eco {
+  font-size: 0.8rem;
+  color: var(--color-verde-salvia);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .footer__inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  .footer__bottom { flex-direction: column; text-align: center; }
+}

@@ -1,0 +1,501 @@
+/* components/ProductDetail.css — UI/UX Pro Max Editorial Showcase */
+
+.detalle {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+/* ── Breadcrumb de navegación ── */
+.detalle__breadcrumb {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-texto-suave);
+  flex-wrap: wrap;
+}
+
+.detalle__breadcrumb-link {
+  background: none;
+  border: none;
+  color: var(--color-siena);
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity var(--transicion);
+}
+.detalle__breadcrumb-link:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.detalle__breadcrumb-sep {
+  opacity: 0.4;
+}
+
+.detalle__breadcrumb-cat {
+  font-weight: 500;
+  color: var(--color-texto-suave);
+}
+
+.detalle__breadcrumb-current {
+  color: var(--color-texto);
+  font-weight: 600;
+}
+
+/* ── Columna Visual (Izquierda) ── */
+.detalle__visual {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: sticky;
+  top: 90px;
+}
+
+.detalle__img-wrapper {
+  position: relative;
+  border-radius: var(--radio-lg);
+  overflow: hidden;
+  box-shadow: var(--sombra-hover);
+  aspect-ratio: 4 / 3.4;
+  background-color: #eed8be;
+  border: 1px solid rgba(160, 82, 45, 0.12);
+}
+
+.detalle__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.detalle__img-wrapper:hover .detalle__img {
+  transform: scale(1.04);
+}
+
+.detalle__destacado-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: var(--color-vara-de-oro);
+  color: var(--color-texto);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.detalle__sello {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  background-color: rgba(253, 246, 238, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--radio);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-texto);
+  border: 1px solid rgba(160, 82, 45, 0.15);
+}
+.detalle__sello svg {
+  color: var(--color-verde-salvia);
+  flex-shrink: 0;
+}
+
+.detalle__quote {
+  background-color: var(--color-fondo-card);
+  border-left: 3px solid var(--color-siena);
+  border-radius: 0 var(--radio) var(--radio) 0;
+  padding: 1rem 1.25rem;
+  font-size: 0.85rem;
+  color: var(--color-texto-suave);
+  line-height: 1.6;
+}
+.detalle__quote cite {
+  display: block;
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-siena);
+  margin-top: 0.4rem;
+}
+
+/* ── Columna de Información (Derecha) ── */
+.detalle__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detalle__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.detalle__categoria {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-verde-salvia);
+}
+
+.detalle__nombre {
+  font-family: var(--font-secundaria);
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  color: var(--color-texto);
+  line-height: 1.15;
+}
+
+/* ── Tarjeta de Precios y Financiación ── */
+.detalle__precio-card {
+  background-color: var(--color-fondo-card);
+  border: 1px solid rgba(160, 82, 45, 0.12);
+  border-radius: var(--radio-lg);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.detalle__precio-main {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.detalle__precio {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-siena);
+  font-family: var(--font-primaria);
+  line-height: 1;
+}
+
+.detalle__precio-unit {
+  font-size: 0.9rem;
+  color: var(--color-texto-suave);
+}
+
+.detalle__cuotas {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.detalle__cuotas-badge {
+  background-color: rgba(135, 169, 107, 0.18);
+  color: #4b6b33;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+}
+
+.detalle__cuotas-txt {
+  font-size: 0.88rem;
+  color: var(--color-texto);
+}
+
+.detalle__transferencia {
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+  border-top: 1px dashed rgba(160, 82, 45, 0.15);
+  padding-top: 0.6rem;
+  margin-top: 0.2rem;
+}
+.detalle__transferencia strong {
+  color: var(--color-texto);
+}
+
+/* ── Subtítulos de sección ── */
+.detalle__subtitulo {
+  font-family: var(--font-secundaria);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-siena);
+  margin-bottom: 0.5rem;
+}
+
+.detalle__descripcion {
+  color: var(--color-texto-suave);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ── Ficha Técnica y Especificaciones ── */
+.detalle__specs {
+  background-color: var(--color-blanco);
+  border: 1px solid rgba(160, 82, 45, 0.1);
+  border-radius: var(--radio-lg);
+  padding: 1.25rem 1.5rem;
+}
+
+.detalle__specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.detalle__spec-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.detalle__spec-icon {
+  background-color: rgba(160, 82, 45, 0.08);
+  color: var(--color-siena);
+  padding: 0.4rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.detalle__spec-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+  margin-bottom: 0.15rem;
+}
+
+.detalle__spec-val {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.detalle__stock {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.detalle__stock--disponible { color: var(--color-verde-salvia); }
+.detalle__stock--bajo       { color: var(--color-vara-de-oro); }
+
+.detalle__materiales-wrap {
+  border-top: 1px solid rgba(160, 82, 45, 0.1);
+  padding-top: 0.85rem;
+}
+
+.detalle__materiales-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+}
+
+.detalle__material-tag {
+  background-color: rgba(135, 169, 107, 0.14);
+  color: #4b6b33;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.3rem 0.75rem;
+  border-radius: 50px;
+  border: 1px solid rgba(135, 169, 107, 0.3);
+}
+
+/* ── Caja de Compra y Acciones ── */
+.detalle__compra-box {
+  background-color: var(--color-fondo-card);
+  border: 1px solid rgba(160, 82, 45, 0.15);
+  border-radius: var(--radio-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.detalle__qty-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.detalle__qty-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.detalle__qty-picker {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-blanco);
+  border: 1.5px solid rgba(160, 82, 45, 0.25);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+
+.detalle__qty-btn {
+  background: none;
+  border: none;
+  width: 38px;
+  height: 38px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-siena);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transicion);
+}
+.detalle__qty-btn:hover:not(:disabled) {
+  background-color: rgba(160, 82, 45, 0.1);
+}
+.detalle__qty-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.detalle__qty-num {
+  font-size: 0.95rem;
+  font-weight: 700;
+  min-width: 32px;
+  text-align: center;
+  color: var(--color-texto);
+}
+
+.detalle__qty-max {
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+}
+
+.detalle__acciones {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.detalle__btn-add {
+  flex: 2;
+  min-height: 48px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 14px rgba(160, 82, 45, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detalle__btn-add .btn-content-wrap,
+.detalle__btn-add .btn-agregado-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.detalle__btn-add .btn-content-wrap svg,
+.detalle__btn-add .btn-agregado-wrap svg {
+  flex-shrink: 0;
+}
+
+.detalle__btn-cart {
+  flex: 1;
+  min-height: 48px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  background-color: transparent;
+  border: 1.5px solid var(--color-siena);
+  color: var(--color-siena);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radio);
+  cursor: pointer;
+  transition: background var(--transicion), color var(--transicion);
+}
+
+.detalle__btn-cart:hover {
+  background-color: var(--color-siena);
+  color: var(--color-blanco);
+}
+
+/* ── Sellos de Confianza (Trust Bar) ── */
+.detalle__trust-bar {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  padding-top: 0.5rem;
+}
+
+.detalle__trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: var(--radio);
+  border: 1px solid rgba(160, 82, 45, 0.08);
+}
+
+.detalle__trust-icon {
+  color: var(--color-siena);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.detalle__trust-item strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-texto);
+  margin-bottom: 0.1rem;
+}
+
+.detalle__trust-item p {
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ── Adaptabilidad Responsive ── */
+@media (max-width: 900px) {
+  .detalle {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .detalle__visual {
+    position: static;
+  }
+
+  .detalle__specs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detalle__acciones {
+    flex-direction: column;
+  }
+
+  .detalle__btn-add,
+  .detalle__btn-cart {
+    width: 100%;
+    flex: auto;
+  }
+}
