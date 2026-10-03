@@ -1,0 +1,110 @@
+/* App.css — Layout principal */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app__main {
+  flex: 1;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Sección hero ── */
+.hero {
+  text-align: center;
+  padding: 3.5rem 1rem 2rem;
+  background: linear-gradient(135deg, var(--color-alabastro) 0%, #EED8BE 100%);
+  border-bottom: 1px solid rgba(160,82,45,0.15);
+  margin-bottom: 2.5rem;
+}
+
+.hero__eyebrow {
+  font-family: var(--font-primaria);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-verde-salvia);
+  margin-bottom: 0.75rem;
+}
+
+.hero__title {
+  font-family: var(--font-secundaria);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: var(--color-siena);
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  line-height: 1.15;
+}
+
+.hero__subtitle {
+  font-size: 1.05rem;
+  color: var(--color-texto-suave);
+  max-width: 520px;
+  margin: 0 auto;
+  font-weight: 300;
+}
+
+/* ── Página de detalle wrapper ── */
+.detalle-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ── Página de contacto wrapper ── */
+.contacto-wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.contacto-wrapper h2 {
+  font-family: var(--font-secundaria);
+  font-size: 2rem;
+  color: var(--color-siena);
+  margin-bottom: 0.5rem;
+}
+
+.contacto-wrapper p {
+  color: var(--color-texto-suave);
+  margin-bottom: 2rem;
+}
+
+/* ── Toast de notificación flotante ── */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-texto);
+  color: var(--color-alabastro);
+  padding: 0.85rem 1.6rem;
+  border-radius: 50px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 2000;
+  border: 1px solid rgba(212, 164, 55, 0.4);
+  animation: toastFade 0.3s ease;
+  pointer-events: none;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@keyframes toastFade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 15px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
