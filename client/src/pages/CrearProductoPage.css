@@ -1,0 +1,191 @@
+/* pages/CrearProductoPage.css */
+/* Estilos para el panel de administración — alta de producto */
+
+.admin-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 4rem;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+}
+
+.admin-titulo {
+  font-family: var(--font-secundaria);
+  font-size: 2rem;
+  color: var(--color-siena);
+  margin-bottom: 0.5rem;
+}
+
+.admin-bajada {
+  color: var(--color-texto-suave);
+}
+
+/* ── Formulario ── */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.admin-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* Fila de dos columnas (precio + stock) */
+.admin-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 480px) {
+  .admin-form__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-form__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.admin-form__required {
+  color: var(--color-siena);
+}
+
+.admin-form__input,
+.admin-form__textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid var(--color-borde, #d9cfc4);
+  border-radius: 6px;
+  font-family: var(--font-principal);
+  font-size: 0.95rem;
+  color: var(--color-texto);
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.admin-form__input:focus,
+.admin-form__textarea:focus {
+  outline: none;
+  border-color: var(--color-siena);
+  box-shadow: 0 0 0 3px rgba(155, 68, 41, 0.12);
+}
+
+.admin-form__input--error {
+  border-color: #c0392b;
+}
+
+.admin-form__textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.admin-form__hint,
+.admin-form__file-name {
+  color: var(--color-texto-suave);
+  font-size: 0.8rem;
+}
+
+.admin-form__file-label {
+  align-self: flex-start;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid var(--color-borde, #d9cfc4);
+  border-radius: 6px;
+  color: var(--color-texto);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.admin-form__file-label:hover {
+  background: #f5f0ea;
+}
+
+.admin-form__file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.admin-form__image-preview {
+  width: min(100%, 280px);
+  max-height: 220px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.admin-form__error-text {
+  font-size: 0.8rem;
+  color: #c0392b;
+}
+
+.admin-form__api-error {
+  padding: 0.75rem 1rem;
+  background: #fdf0ef;
+  border: 1px solid #e74c3c;
+  border-radius: 6px;
+  color: #c0392b;
+  font-size: 0.9rem;
+}
+
+/* ── Botones de acción ── */
+.admin-form__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.admin-form__btn-cancelar {
+  padding: 0.65rem 1.4rem;
+  border: 1.5px solid var(--color-borde, #d9cfc4);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-texto);
+  font-family: var(--font-principal);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-form__btn-cancelar:hover:not(:disabled) {
+  background: #f5f0ea;
+}
+
+.admin-form__btn-guardar {
+  padding: 0.65rem 1.6rem;
+  background: var(--color-siena);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-principal);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.admin-form__btn-guardar:hover:not(:disabled) {
+  background: #7a3420;
+}
+
+.admin-form__btn-guardar:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.admin-form__btn-guardar:disabled,
+.admin-form__btn-cancelar:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
