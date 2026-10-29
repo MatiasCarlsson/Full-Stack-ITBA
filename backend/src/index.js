@@ -1,58 +1,41 @@
 // src/index.js
-// Entry point del backend — Hermanos Jota API
+// Entry point del servidor — Hermanos Jota API
 
-const express = require("express");
-const path = require("path");
-const cors = require("cors");
-const logger = require("./middlewares/logger");
-const productosRouter = require("./routes/productos");
+require('dotenv').config();
+const app = require('./app');
+const { connectDB } = require('./config/db');
 
-const app = express();
 const PORT = process.env.PORT || 3001;
 
-// ── Middlewares globales ──────────────────────────────────────────────────────
+// ── Inicialización del Servidor ─────────────────────────────────────────────────
 
-// Habilitar CORS para permitir peticiones desde el frontend React (localhost:3000)
-app.use(cors());
+async function startServer() {
+  // 1. Conectar a MongoDB Atlas antes de abrir el puerto
+  await connectDB();
 
-// Middleware de logging personalizado: registra método + URL de cada request
-app.use(logger);
-
-// Parsear el body de las requests como JSON (para futuras peticiones POST)
-app.use(express.json());
-
-// Servir imágenes estáticas por si se solicitan directamente al backend
-app.use("/imagenes", express.static(path.join(__dirname, "../../client/public/imagenes")));
-
-// ── Rutas ─────────────────────────────────────────────────────────────────────
-
-// Montar el router de productos bajo el prefijo /api/productos
-app.use("/api/productos", productosRouter);
-
-// Ruta raíz de bienvenida
-app.get("/", (req, res) => {
-  res.json({
-    mensaje: "API Hermanos Jota — Backend funcionando correctamente",
-    version: "1.0.0",
-    endpoints: {
-      productos: "GET /api/productos",
-      productoPorId: "GET /api/productos/:id",
-    },
+  // 2. Levantar el servidor HTTP
+  const server = app.listen(PORT, () => {
+    console.log(`🪵  Hermanos Jota API corriendo en http://localhost:${PORT}`);
+    console.log(`📦  Ambiente: ${process.env.NODE_ENV || 'development'}`);
+    console.log('📦  Endpoints disponibles:');
+    console.log('   GET    /api/productos');
+    console.log('   GET    /api/productos/:id');
+    console.log('   POST   /api/productos');
+    console.log('   PUT    /api/productos/:id');
+    console.log('   DELETE /api/productos/:id\n');
   });
-});
 
-// Middleware de manejo de rutas no encontradas (404 genérico)
-app.use((req, res) => {
-  res.status(404).json({
-    error: "Ruta no encontrada",
-    mensaje: `El endpoint ${req.method} ${req.url} no existe`,
-  });
-});
+  // 3. Manejo de cierre elegante (Graceful Shutdown)
+  const shutdown = (signal) => {
+    console.log(`\n🛑 Recibida señal ${signal}. Cerrando servidor...`);
+    server.close(() => {
+      console.log('🔒 Servidor HTTP cerrado.');
+      process.exit(0);
+    });
+  };
 
-// ── Arrancar servidor ─────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`\n🪵 Hermanos Jota API corriendo en http://localhost:${PORT}`);
-  console.log(`📦 Endpoints disponibles:`);
-  console.log(`   GET  /api/productos`);
-  console.log(`   GET  /api/productos/:id\n`);
-});
+  process.on('SIGINT', () => shutdown('SIGINT'));
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+}
+
+startServer();
