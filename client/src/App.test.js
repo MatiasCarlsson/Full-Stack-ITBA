@@ -1,8 +1,10 @@
 import { render, screen, within } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import ProductCard from './components/ProductCard';
 import ProductDetail from './components/ProductDetail';
 import ContactForm from './components/ContactForm';
+import CrearProductoPage from './pages/CrearProductoPage';
 
 test('renderiza el nombre de la marca Hermanos Jota', () => {
   render(<App />);
@@ -12,17 +14,18 @@ test('renderiza el nombre de la marca Hermanos Jota', () => {
 
 test('renderiza los enlaces de navegación y botón de carrito', () => {
   render(<App />);
-  expect(screen.getByRole('button', { name: /^catálogo$/i })).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /^contacto$/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /^catálogo$/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /^contacto$/i })).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: /\+ publicar/i })).not.toBeInTheDocument();
   expect(screen.getByRole('button', { name: /carrito/i })).toBeInTheDocument();
 });
 
 const mockProducto = {
-  id: 1,
+  _id: '6ae36b21f12dd7482a1421bd',
   nombre: 'Mesa de Comedor Roble',
   precio: 350000,
   categoria: 'Mesas',
-  imagen: '/imagenes/mesa-comedor-roble.png',
+  imagenUrl: '/imagenes/mesa-comedor-roble.png',
   destacado: true,
   stock: 12,
   descripcion: 'Mesa de diseño nórdico con tapa maciza.',
@@ -30,13 +33,14 @@ const mockProducto = {
   materiales: ['Roble macizo', 'Aceite natural'],
 };
 
-test('ProductCard renderiza botón "Agregar" con aria-label y SVG de carrito', () => {
+test('ProductCard renderiza botón "Agregar" con aria-label y SVG de carrito dentro de Router', () => {
   render(
-    <ProductCard
-      producto={mockProducto}
-      onVerDetalle={() => {}}
-      onAgregarAlCarrito={() => {}}
-    />
+    <MemoryRouter>
+      <ProductCard
+        producto={mockProducto}
+        onAgregarAlCarrito={() => {}}
+      />
+    </MemoryRouter>
   );
   const btnAgregar = screen.getByRole('button', { name: /agregar mesa de comedor roble al carrito/i });
   expect(btnAgregar).toBeInTheDocument();
@@ -65,4 +69,17 @@ test('ContactForm renderiza campos de nombre, email, mensaje y botón de envío'
   expect(screen.getByLabelText(/correo electrónico/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/mensaje/i)).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /enviar consulta/i })).toBeInTheDocument();
+});
+
+test('CrearProductoPage renderiza campos de formulario de alta de producto', () => {
+  render(
+    <MemoryRouter>
+      <CrearProductoPage />
+    </MemoryRouter>
+  );
+  expect(screen.getByRole('heading', { name: /alta de producto/i })).toBeInTheDocument();
+  expect(screen.getByLabelText(/nombre/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/precio/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/stock/i)).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /guardar producto/i })).toBeInTheDocument();
 });
