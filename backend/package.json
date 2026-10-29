@@ -1,6 +1,7 @@
 {
   "name": "hermanos-jota-backend",
   "version": "1.0.0",
+  "packageManager": "pnpm@12.8.2",
   "description": "API REST backend para el e-commerce Hermanos Jota",
   "main": "src/index.js",
   "scripts": {
