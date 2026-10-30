@@ -100,7 +100,7 @@ function CartDrawer({
             onClick={onCerrar}
             aria-label="Cerrar carrito"
           >
-            ✕
+            Cerrar
           </button>
         </div>
 
@@ -180,7 +180,7 @@ function CartDrawer({
                       onClick={() => onEliminarItem(itemId)}
                       aria-label={`Eliminar ${item.nombre} del carrito`}
                     >
-                      🗑
+                      Eliminar
                     </button>
                   </li>
                 );

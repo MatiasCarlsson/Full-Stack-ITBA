@@ -43,7 +43,7 @@ function errorHandler(err, req, res, next) {
 
   // Error interno del servidor por defecto
   const statusCode = err.statusCode || 500;
-  console.error(`❌ [Error ${statusCode}] ${req.method} ${req.url}:`, err.message);
+  console.error(`[Error ${statusCode}] ${req.method} ${req.url}:`, err.message);
 
   res.status(statusCode).json({
     error: err.name || 'Error del servidor',

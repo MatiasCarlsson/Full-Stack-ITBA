@@ -249,7 +249,7 @@ function CrearProductoPage() {
         {/* Error de la API */}
         {errorApi && (
           <div className="admin-form__api-error" role="alert">
-            ⚠ {errorApi}
+            Error: {errorApi}
           </div>
         )}
 

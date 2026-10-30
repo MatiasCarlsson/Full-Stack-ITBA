@@ -15,9 +15,9 @@ async function startServer() {
 
   // 2. Levantar el servidor HTTP
   const server = app.listen(PORT, () => {
-    console.log(`🪵  Hermanos Jota API corriendo en http://localhost:${PORT}`);
-    console.log(`📦  Ambiente: ${process.env.NODE_ENV || 'development'}`);
-    console.log('📦  Endpoints disponibles:');
+    console.log(`Hermanos Jota API corriendo en http://localhost:${PORT}`);
+    console.log(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
+    console.log('Endpoints disponibles:');
     console.log('   GET    /api/productos');
     console.log('   GET    /api/productos/:id');
     console.log('   POST   /api/productos');
@@ -27,9 +27,9 @@ async function startServer() {
 
   // 3. Manejo de cierre elegante (Graceful Shutdown)
   const shutdown = (signal) => {
-    console.log(`\n🛑 Recibida señal ${signal}. Cerrando servidor...`);
+    console.log(`\nRecibida señal ${signal}. Cerrando servidor...`);
     server.close(() => {
-      console.log('🔒 Servidor HTTP cerrado.');
+      console.log('Servidor HTTP cerrado.');
       process.exit(0);
     });
   };
