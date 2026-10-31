@@ -76,7 +76,6 @@ test('ContactForm renderiza campos de nombre, email, mensaje y botón de envío'
   expect(screen.getByRole('button', { name: /enviar consulta/i })).toBeInTheDocument();
 });
 
-// ── Administración ────────────────────────────────────────────────────────────
 
 test('sin la clave de administración, el alta de producto no se muestra', () => {
   render(
@@ -131,7 +130,6 @@ test('el formulario de alta no envía nada si faltan nombre y precio', () => {
   expect(screen.getByText(/el precio es obligatorio/i)).toBeInTheDocument();
 });
 
-// ── Tema claro y oscuro ───────────────────────────────────────────────────────
 
 test('el botón de tema alterna el atributo data-theme del documento', () => {
   render(<App />);

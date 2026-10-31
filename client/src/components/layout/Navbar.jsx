@@ -7,10 +7,6 @@ import { CartIcon } from '../common/Icons';
 import BotonTema from '../common/BotonTema';
 import './Navbar.css';
 
-/**
- * Navbar — Barra de navegación principal.
- * Lee estado de carrito desde CartContext o mediante props opcionales.
- */
 function Navbar({ cantidadCarrito: propCantidad, onAbrirCarrito: propAbrir }) {
   // Soporte dual: lee del context o de props para retrocompatibilidad
   let contextCart = null;

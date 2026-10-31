@@ -190,8 +190,6 @@
   cursor: not-allowed;
 }
 
-/* ── Casilla de destacado ──────────────────────────────────────────────────── */
-
 .admin-form__check {
   display: flex;
   align-items: center;

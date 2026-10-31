@@ -127,11 +127,11 @@ Todos los endpoints responden en formato JSON y manejan códigos de estado HTTP 
 | :--- | :--- | :--- | :--- |
 | **GET** | `/api/productos` | Obtiene la lista completa de productos desde MongoDB Atlas | `200 OK`, `500 Internal Error` |
 | **GET** | `/api/productos/:id` | Obtiene un producto por su `_id` | `200 OK`, `400 Bad Request` (CastError), `404 Not Found`, `500` |
-| **POST** 🔒 | `/api/productos` | Crea un nuevo producto en la base de datos | `201 Created`, `400 Bad Request` (Validación), `401 Unauthorized`, `429 Too Many Requests`, `500` |
-| **PUT** 🔒 | `/api/productos/:id` | Actualiza los datos de un producto existente | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
-| **DELETE** 🔒 | `/api/productos/:id` | Elimina un producto por su `_id` | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
+| **POST**  | `/api/productos` | Crea un nuevo producto en la base de datos | `201 Created`, `400 Bad Request` (Validación), `401 Unauthorized`, `429 Too Many Requests`, `500` |
+| **PUT**  | `/api/productos/:id` | Actualiza los datos de un producto existente | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
+| **DELETE**  | `/api/productos/:id` | Elimina un producto por su `_id` | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
 
-🔒 = requiere la cabecera `x-admin-token`.
+ key = requiere la cabecera `x-admin-token`.
 
 ### Modelo de Datos Mongoose (`Producto`)
 
@@ -271,7 +271,7 @@ pnpm run build
 
 ---
 
-## 🌗 Tema Claro y Oscuro
+## Tema Claro y Oscuro
 
 Un botón en la barra superior alterna los dos temas. La elección queda guardada en `localStorage`
 y, si el visitante nunca eligió, se respeta la preferencia configurada en su sistema operativo.
@@ -291,7 +291,7 @@ mínimo de la WCAG.
 
 ---
 
-## 🔐 Seguridad de la API
+##  Seguridad de la API
 
 | Defensa | Qué resuelve |
 | :--- | :--- |

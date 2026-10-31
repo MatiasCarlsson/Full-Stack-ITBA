@@ -62,9 +62,7 @@
     --borde-marcado: #ffffff26;
 }
 
-/* ---------------------------------------------------------------------------
- * Parche 1: las 3 reglas donde --color-alabastro era fondo y no texto.
- * ------------------------------------------------------------------------- */
+
 
 :root[data-theme='dark'] body {
     background-color: var(--fondo-pagina);
@@ -80,9 +78,6 @@
     border-bottom-color: var(--borde-sutil);
 }
 
-/* ---------------------------------------------------------------------------
- * Parche 2: las 5 reglas donde --color-blanco era fondo y no texto.
- * ------------------------------------------------------------------------- */
 
 :root[data-theme='dark'] .detalle__specs,
 :root[data-theme='dark'] .detalle__qty-picker,
@@ -93,10 +88,6 @@
     background-color: var(--fondo-superficie);
 }
 
-/* ---------------------------------------------------------------------------
- * Parche 3: las 2 reglas donde --color-texto era fondo y no texto.
- * ------------------------------------------------------------------------- */
-
 :root[data-theme='dark'] .footer,
 :root[data-theme='dark'] .toast {
     background-color: #0f0b08;
@@ -105,12 +96,6 @@
 :root[data-theme='dark'] .footer {
     border-top: 1px solid var(--borde-sutil);
 }
-
-/* ---------------------------------------------------------------------------
- * Bordes y fondos escritos a mano en la hoja original.
- * Son siena translúcido (#a0522d14 y compañía), pensados para fondo claro. Sobre oscuro
- * desaparecen, así que las piezas pierden el contorno y el sitio queda plano.
- * ------------------------------------------------------------------------- */
 
 :root[data-theme='dark'] .product-card,
 :root[data-theme='dark'] .product-list__count,
@@ -209,12 +194,6 @@
 :root[data-theme='dark'] .cart-drawer__icon {
     color: var(--color-blanco);
 }
-
-/* ---------------------------------------------------------------------------
- * Superficies claras escritas a mano en las hojas por componente.
- * Son paneles blancos o crema que no dependen de ninguna variable, así que en tema oscuro
- * aparecían como recuadros encandilantes con texto crema encima, ilegibles.
- * ------------------------------------------------------------------------- */
 
 :root[data-theme='dark'] .detalle__trust-item,
 :root[data-theme='dark'] .product-list__estado--error,

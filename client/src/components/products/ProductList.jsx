@@ -5,10 +5,6 @@ import { AlertIcon, RefreshIcon } from '../common/Icons';
 import { useProducts } from '../../hooks/useProducts';
 import './ProductList.css';
 
-/**
- * ProductList — Lista de productos obtenidos desde la API REST.
- * Maneja tres estados: cargando, error y éxito, con filtros reactivos.
- */
 function ProductList({ onVerDetalle, onAgregarAlCarrito }) {
   const { productos, cargando, error, recargar } = useProducts();
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas');

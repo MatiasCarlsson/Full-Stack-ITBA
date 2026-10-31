@@ -4,10 +4,6 @@
 import { useTema } from '../../context/TemaContext';
 import { SunIcon, MoonIcon } from './Icons';
 
-/**
- * BotonTema — alterna claro y oscuro desde la barra de navegación.
- * Muestra el ícono de a dónde va, no el de dónde está: en oscuro ofrece el sol.
- */
 function BotonTema() {
   const { esOscuro, alternarTema } = useTema();
 
