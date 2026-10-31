@@ -3,10 +3,6 @@ import { useCart } from '../../context/CartContext';
 import { CartIcon, CloseIcon, TrashIcon } from '../common/Icons';
 import './CartDrawer.css';
 
-/**
- * CartDrawer — Panel lateral deslizable para gestionar los ítems del carrito.
- * Lee de CartContext o de props para máxima flexibilidad.
- */
 function CartDrawer({
   abierto: propAbierto,
   onCerrar: propCerrar,

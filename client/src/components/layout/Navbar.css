@@ -143,8 +143,6 @@
   .navbar__carrito-txt { display: none; }
 }
 
-/* ── Botón de tema claro y oscuro ──────────────────────────────────────────── */
-
 .boton-tema {
   display: inline-flex;
   align-items: center;
@@ -175,12 +173,6 @@
   .boton-tema { transition: none; }
   .boton-tema:hover { transform: none; }
 }
-
-/* ── Encabezado en pantallas angostas ──────────────────────────────────────── */
-/* El inner es un flex con space-between. Al sumar el botón de tema pasó de tres piezas a
-   cuatro y, sin margen para encoger, la marca se montaba sobre el menú. Estas tres reglas
-   le devuelven el aire: el logo puede achicarse, la marca deja de partirse en dos líneas
-   y, cuando ya no entra, queda solo el isotipo. */
 
 .navbar__logo {
   min-width: 0;

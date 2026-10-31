@@ -6,7 +6,7 @@ Aplicación web full stack de comercio electrónico para **Hermanos Jota**, mueb
 - **Frontend:** React 19 + React Router DOM (enrutamiento declarativo SPA, páginas modulares, formularios controlados, carrito global, panel de administración con CRUD completo, tema claro y oscuro, y diseño editorial accesible).
 - **Gestor de paquetes:** [PNPM](https://pnpm.io/) (no se utiliza NPM para instalar dependencias).
 
-## 👥 Integrantes
+## Integrantes
 
 | Integrante | Correo | GitHub |
 | :--- | :--- | :--- |
@@ -15,7 +15,7 @@ Aplicación web full stack de comercio electrónico para **Hermanos Jota**, mueb
 
 ---
 
-## 🪵 Identidad y Manual de Marca
+##  Identidad y Manual de Marca
 
 - **Paleta de Colores**:
   - Siena Tostado: `#A0522D` (Color principal, encabezados, botones primarios)
@@ -34,7 +34,7 @@ Aplicación web full stack de comercio electrónico para **Hermanos Jota**, mueb
 
 ---
 
-## 🏗️ Arquitectura del Proyecto
+##  Arquitectura del Proyecto
 
 ```text
 Sprint 3-4/
@@ -116,7 +116,7 @@ Sprint 3-4/
 
 ---
 
-## 🔌 API REST — Endpoints (Sprint 5-6)
+##  API REST — Endpoints (Sprint 5-6)
 
 Leer el catálogo es público. Crear, editar y eliminar exigen la cabecera `x-admin-token` con el
 valor de `ADMIN_TOKEN`: sin ella la respuesta es `401 Unauthorized`.
@@ -127,11 +127,11 @@ Todos los endpoints responden en formato JSON y manejan códigos de estado HTTP 
 | :--- | :--- | :--- | :--- |
 | **GET** | `/api/productos` | Obtiene la lista completa de productos desde MongoDB Atlas | `200 OK`, `500 Internal Error` |
 | **GET** | `/api/productos/:id` | Obtiene un producto por su `_id` | `200 OK`, `400 Bad Request` (CastError), `404 Not Found`, `500` |
-| **POST** 🔒 | `/api/productos` | Crea un nuevo producto en la base de datos | `201 Created`, `400 Bad Request` (Validación), `401 Unauthorized`, `429 Too Many Requests`, `500` |
-| **PUT** 🔒 | `/api/productos/:id` | Actualiza los datos de un producto existente | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
-| **DELETE** 🔒 | `/api/productos/:id` | Elimina un producto por su `_id` | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
+| **POST**  | `/api/productos` | Crea un nuevo producto en la base de datos | `201 Created`, `400 Bad Request` (Validación), `401 Unauthorized`, `429 Too Many Requests`, `500` |
+| **PUT**  | `/api/productos/:id` | Actualiza los datos de un producto existente | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
+| **DELETE**  | `/api/productos/:id` | Elimina un producto por su `_id` | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
 
-🔒 = requiere la cabecera `x-admin-token`.
+ key = requiere la cabecera `x-admin-token`.
 
 ### Modelo de Datos Mongoose (`Producto`)
 
@@ -151,7 +151,7 @@ Todos los endpoints responden en formato JSON y manejan códigos de estado HTTP 
 
 ---
 
-## 🗺️ Rutas del Frontend (React Router DOM)
+##  Rutas del Frontend (React Router DOM)
 
 | Ruta | Componente / Página | Descripción |
 | :--- | :--- | :--- |
@@ -169,7 +169,7 @@ comodidad: quien decide de verdad es la API, que rechaza toda escritura sin la c
 
 ---
 
-## 🚀 Cómo Ejecutar el Proyecto en Local
+## Cómo Ejecutar el Proyecto en Local
 
 ### 1. Configuración de Variables de Entorno del Backend
 
@@ -241,7 +241,7 @@ pnpm run build
 
 ---
 
-## ☁️ Guía de Despliegue en la Nube
+## Guía de Despliegue en la Nube
 
 ### Backend en Render.com (Web Service)
 
@@ -271,7 +271,7 @@ pnpm run build
 
 ---
 
-## 🌗 Tema Claro y Oscuro
+## Tema Claro y Oscuro
 
 Un botón en la barra superior alterna los dos temas. La elección queda guardada en `localStorage`
 y, si el visitante nunca eligió, se respeta la preferencia configurada en su sistema operativo.
@@ -291,7 +291,7 @@ mínimo de la WCAG.
 
 ---
 
-## 🔐 Seguridad de la API
+##  Seguridad de la API
 
 | Defensa | Qué resuelve |
 | :--- | :--- |
@@ -309,7 +309,7 @@ memoria y la ataca con 31 chequeos.
 
 ---
 
-## ✨ Buenas Prácticas Aplicadas
+## Buenas Prácticas Aplicadas
 
 1. **Vercel React Best Practices & Performance**:
    - Peticiones con `AbortController` en `useEffect` para cancelar llamadas si el usuario navega a otra pantalla.
