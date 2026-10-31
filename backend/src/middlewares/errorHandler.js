@@ -15,6 +15,15 @@ function notFoundHandler(req, res, next) {
  * Middleware centralizado para captura y formateo de errores.
  */
 function errorHandler(err, req, res, next) {
+  // Origen rechazado por la política de CORS. Sin esto saldría como un 500 genérico y
+  // costaría darse cuenta de que falta cargar la URL del frontend en ORIGENES_PERMITIDOS.
+  if (/no está autorizado a usar esta API|ORIGENES_PERMITIDOS no está configurada/.test(err.message)) {
+    return res.status(403).json({
+      error: 'Origen no permitido',
+      mensaje: err.message,
+    });
+  }
+
   // Error de formato en ID de MongoDB (CastError)
   if (err.name === 'CastError') {
     return res.status(400).json({

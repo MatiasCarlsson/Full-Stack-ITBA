@@ -3,6 +3,8 @@
 
 const express = require('express');
 const router = express.Router();
+const requiereAdmin = require('../middlewares/requiereAdmin');
+const { limiteEscritura } = require('../middlewares/seguridad');
 const {
   obtenerProductos,
   obtenerProductoPorId,
@@ -11,15 +13,19 @@ const {
   eliminarProducto,
 } = require('../controllers/producto.controller');
 
+// Leer el catálogo es público. Modificarlo exige la clave de administración y tiene un
+// techo de intentos propio, para que nadie pueda probar claves a repetición.
+const soloAdmin = [limiteEscritura, requiereAdmin];
+
 // GET /api/productos y POST /api/productos
 router.route('/')
   .get(obtenerProductos)
-  .post(crearProducto);
+  .post(soloAdmin, crearProducto);
 
 // GET, PUT y DELETE /api/productos/:id
 router.route('/:id')
   .get(obtenerProductoPorId)
-  .put(actualizarProducto)
-  .delete(eliminarProducto);
+  .put(soloAdmin, actualizarProducto)
+  .delete(soloAdmin, eliminarProducto);
 
 module.exports = router;

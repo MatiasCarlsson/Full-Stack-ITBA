@@ -1,4 +1,4 @@
-// components/ContactForm.jsx
+// components/contact/ContactForm.jsx
 import { useState, useRef, useEffect } from 'react';
 import { MailIcon } from '../common/Icons';
 import './ContactForm.css';

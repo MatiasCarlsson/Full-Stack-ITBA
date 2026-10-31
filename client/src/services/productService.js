@@ -2,8 +2,36 @@
 // Capa de abstracción para todas las interacciones HTTP con la API de productos
 
 import { API_BASE_URL } from '../config/api';
+import { cabecerasAdmin } from './adminAuth';
 
 const BASE_URL = `${API_BASE_URL}/api/productos`;
+
+// Crear, editar y borrar exigen la clave de administración: la API responde 401 sin ella.
+const CABECERAS_ESCRITURA = () => ({ 'Content-Type': 'application/json', ...cabecerasAdmin() });
+
+/**
+ * Traduce una respuesta con error a un mensaje que se pueda mostrar tal cual.
+ * @param {Response} response
+ * @returns {Promise<Error>}
+ */
+async function errorDeRespuesta(response) {
+  const data = await response.json().catch(() => ({}));
+
+  if (response.status === 401) {
+    return new Error('La clave de administración es incorrecta o venció. Volvé a ingresarla.');
+  }
+
+  if (response.status === 429) {
+    return new Error('Demasiados intentos seguidos. Esperá unos minutos y volvé a probar.');
+  }
+
+  // El backend manda "detalles" como arreglo cuando falla la validación del esquema.
+  if (Array.isArray(data.detalles) && data.detalles.length > 0) {
+    return new Error(data.detalles.join(' '));
+  }
+
+  return new Error(data.mensaje || data.detalle || data.error || `Error ${response.status}`);
+}
 
 /**
  * Obtiene la lista completa de productos desde el backend.
@@ -42,13 +70,12 @@ export async function getProductoById(id, signal) {
 export async function createProducto(productoData) {
   const response = await fetch(BASE_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: CABECERAS_ESCRITURA(),
     body: JSON.stringify(productoData),
   });
 
   if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
-    throw new Error(data.detalle || data.error || `Error ${response.status}`);
+    throw await errorDeRespuesta(response);
   }
 
   return response.json();
@@ -63,13 +90,12 @@ export async function createProducto(productoData) {
 export async function updateProducto(id, productoData) {
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: CABECERAS_ESCRITURA(),
     body: JSON.stringify(productoData),
   });
 
   if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
-    throw new Error(data.detalle || data.error || `Error ${response.status}`);
+    throw await errorDeRespuesta(response);
   }
 
   return response.json();
@@ -83,11 +109,11 @@ export async function updateProducto(id, productoData) {
 export async function deleteProducto(id) {
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'DELETE',
+    headers: cabecerasAdmin(),
   });
 
   if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
-    throw new Error(data.detalle || data.error || `Error ${response.status}`);
+    throw await errorDeRespuesta(response);
   }
 
   return response.json();

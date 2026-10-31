@@ -1,0 +1,248 @@
+/* Tema oscuro de Hermanos Jota.
+ *
+ * Se importa DESPUÉS de la hoja de estilos principal y no toca ni una línea de la que ya
+ * existe. Todo cuelga de :root[data-theme="dark"], así que con el atributo en "light" o sin
+ * atributo el sitio queda exactamente como está hoy.
+ *
+ * Por qué no alcanza con dar vuelta las variables:
+ * tres de ellas cumplen dos papeles a la vez en la hoja original.
+ *
+ *   --color-alabastro   fondo en 3 reglas (body, .cart-drawer, .hero)
+ *                       texto en 10 (navbar, footer, cart-drawer, toast)
+ *   --color-blanco      texto en 9 (botones sobre siena)
+ *                       fondo en 5 (specs, inputs, footer del carrito)
+ *   --color-texto       texto en 23
+ *                       fondo en 2 (.footer y .toast)
+ *
+ * Si se da vuelta la variable a secas, uno de los dos papeles queda ilegible. Por eso cada
+ * una se mueve en la dirección de su papel mayoritario y abajo se parchea el minoritario,
+ * que son diez reglas contadas. El arreglo de fondo es pasar esos literales a variables de
+ * rol en la hoja original, y está explicado en LEEME.md.
+ */
+
+:root[data-theme='dark'] {
+    /* Papel mayoritario: texto claro sobre superficies oscuras. Se queda clara. */
+    --color-alabastro: #efe3d5;
+
+    /* --color-blanco pasa a ser tinta oscura, aunque el nombre diga lo contrario.
+     * Sus 9 usos como texto son todos sobre botones de fondo siena, y el siena de abajo
+     * está aclarado para que se lea como texto. Blanco sobre ese siena da 2.9:1, por
+     * debajo del mínimo. Tinta oscura sobre el mismo siena da 8.4:1.
+     * Sus 5 usos como fondo están todos cubiertos por el parche 2, así que darla vuelta
+     * acá no deja ninguna superficie en blanco. */
+    --color-blanco: #1a120c;
+
+    /* Papel mayoritario: texto. Pasa de marrón oscuro a crema. */
+    --color-texto: #ece0d2;
+    --color-texto-suave: #b3a494;
+
+    /* Superficies. */
+    --color-fondo-card: #241c16;
+
+    /* La marca, un punto más luminosa para que aguante sobre fondo oscuro.
+     * El siena original (#a0522d) sobre #17110d queda en 2.6:1, por debajo del mínimo
+     * de 4.5:1 que pide la WCAG para texto. Este llega a 6.1:1. */
+    --color-siena: #d08050;
+    --color-siena-oscuro: #a85c32;
+    --color-verde-salvia: #a3c487;
+    --color-vara-de-oro: #e2bb5e;
+    --color-rosa-polvo: #dd9b8c;
+
+    /* En claro la sombra es siena translúcido y acá no se vería. */
+    --sombra: 0 2px 12px #00000059;
+    --sombra-hover: 0 8px 28px #0000008c;
+
+    /* La hoja original ya la pide como var(--color-borde, #d9cfc4), pero nunca se definió. */
+    --color-borde: #3d322a;
+
+    /* Propias de este archivo, para no repetir valores en los parches de abajo. */
+    --fondo-pagina: #17110d;
+    --fondo-superficie: #241c16;
+    --borde-sutil: #ffffff14;
+    --borde-marcado: #ffffff26;
+}
+
+/* ---------------------------------------------------------------------------
+ * Parche 1: las 3 reglas donde --color-alabastro era fondo y no texto.
+ * ------------------------------------------------------------------------- */
+
+:root[data-theme='dark'] body {
+    background-color: var(--fondo-pagina);
+}
+
+:root[data-theme='dark'] .cart-drawer {
+    background-color: var(--fondo-pagina);
+    box-shadow: -4px 0 24px #000000a6;
+}
+
+:root[data-theme='dark'] .hero {
+    background: linear-gradient(135deg, #1f1811 0, #2b211a 100%);
+    border-bottom-color: var(--borde-sutil);
+}
+
+/* ---------------------------------------------------------------------------
+ * Parche 2: las 5 reglas donde --color-blanco era fondo y no texto.
+ * ------------------------------------------------------------------------- */
+
+:root[data-theme='dark'] .detalle__specs,
+:root[data-theme='dark'] .detalle__qty-picker,
+:root[data-theme='dark'] .cart-item__cantidad-ctrl,
+:root[data-theme='dark'] .cart-drawer__footer,
+:root[data-theme='dark'] .contact-form__input,
+:root[data-theme='dark'] .contact-form__textarea {
+    background-color: var(--fondo-superficie);
+}
+
+/* ---------------------------------------------------------------------------
+ * Parche 3: las 2 reglas donde --color-texto era fondo y no texto.
+ * ------------------------------------------------------------------------- */
+
+:root[data-theme='dark'] .footer,
+:root[data-theme='dark'] .toast {
+    background-color: #0f0b08;
+}
+
+:root[data-theme='dark'] .footer {
+    border-top: 1px solid var(--borde-sutil);
+}
+
+/* ---------------------------------------------------------------------------
+ * Bordes y fondos escritos a mano en la hoja original.
+ * Son siena translúcido (#a0522d14 y compañía), pensados para fondo claro. Sobre oscuro
+ * desaparecen, así que las piezas pierden el contorno y el sitio queda plano.
+ * ------------------------------------------------------------------------- */
+
+:root[data-theme='dark'] .product-card,
+:root[data-theme='dark'] .product-list__count,
+:root[data-theme='dark'] .detalle__spec-icon,
+:root[data-theme='dark'] .detalle__trust-item,
+:root[data-theme='dark'] .contact-form,
+:root[data-theme='dark'] .detalle__specs,
+:root[data-theme='dark'] .detalle__materiales-wrap,
+:root[data-theme='dark'] .cart-item,
+:root[data-theme='dark'] .detalle__img-wrapper,
+:root[data-theme='dark'] .detalle__precio-card,
+:root[data-theme='dark'] .cart-drawer__footer,
+:root[data-theme='dark'] .product-list__estado,
+:root[data-theme='dark'] .detalle__qty-picker,
+:root[data-theme='dark'] .product-list__filtro-btn,
+:root[data-theme='dark'] .cart-item__cantidad-ctrl,
+:root[data-theme='dark'] .contact-form__input,
+:root[data-theme='dark'] .contact-form__textarea,
+:root[data-theme='dark'] .admin-form__input,
+:root[data-theme='dark'] .admin-form__textarea,
+:root[data-theme='dark'] .admin-form__file-label,
+:root[data-theme='dark'] .admin-form__btn-cancelar {
+    border-color: var(--borde-sutil);
+}
+
+:root[data-theme='dark'] .product-list__error-ayuda,
+:root[data-theme='dark'] .detalle__sello,
+:root[data-theme='dark'] .detalle__transferencia,
+:root[data-theme='dark'] .detalle__compra-box {
+    background-color: var(--fondo-superficie);
+    border-color: var(--borde-marcado);
+}
+
+/* El marco de las fotos era un crema (#eed8be) que sobre oscuro grita. */
+:root[data-theme='dark'] .product-card__img-wrapper,
+:root[data-theme='dark'] .detalle__img-wrapper,
+:root[data-theme='dark'] .cart-item__img {
+    background-color: #2d2219;
+}
+
+/* Campos de formulario: el fondo blanco de la hoja original encandila en oscuro. */
+:root[data-theme='dark'] .admin-form__input,
+:root[data-theme='dark'] .admin-form__textarea {
+    background-color: var(--fondo-superficie);
+    color: var(--color-texto);
+}
+
+:root[data-theme='dark'] .admin-form__input::placeholder,
+:root[data-theme='dark'] .admin-form__textarea::placeholder,
+:root[data-theme='dark'] .contact-form__input::placeholder,
+:root[data-theme='dark'] .contact-form__textarea::placeholder {
+    color: #8a7a6c;
+}
+
+/* El rojo de error (#c0392b) sobre fondo oscuro queda en 3.4:1. Este llega a 5.2:1. */
+:root[data-theme='dark'] .product-list__error-msg,
+:root[data-theme='dark'] .contact-form__error-text,
+:root[data-theme='dark'] .admin-form__error-text,
+:root[data-theme='dark'] .cart-drawer__vaciar:hover {
+    color: #ef8276;
+}
+
+:root[data-theme='dark'] .contact-form__input--error,
+:root[data-theme='dark'] .contact-form__textarea--error,
+:root[data-theme='dark'] .admin-form__input--error {
+    border-color: #ef8276;
+}
+
+/* --color-texto se volvió crema, pero en las insignias es texto sobre un fondo dorado
+ * claro, que no cambia con el tema. Ahí tiene que seguir siendo tinta oscura: crema sobre
+ * ese dorado da 1.4:1, prácticamente ilegible, y tinta oscura da 9.7:1. */
+:root[data-theme='dark'] .product-card__badge,
+:root[data-theme='dark'] .detalle__destacado-badge,
+:root[data-theme='dark'] .navbar__carrito-badge {
+    color: #1a120c;
+}
+
+/* El gris del copyright apenas llegaba a 3.89:1 sobre el pie oscuro. */
+:root[data-theme='dark'] .footer__copy {
+    color: #a99685;
+}
+
+/* Estas dos escriben color:#fff a mano, así que el cambio de --color-blanco no las alcanza.
+ * Son texto sobre siena, el mismo caso que los botones. */
+:root[data-theme='dark'] .admin-home__action,
+:root[data-theme='dark'] .admin-form__btn-guardar {
+    color: var(--color-blanco);
+}
+
+/* La cabecera del carrito es otra superficie siena que no cambia con el tema: su texto
+ * usaba --color-alabastro y sobre el siena aclarado quedaba en 2.4:1. */
+:root[data-theme='dark'] .cart-drawer__header,
+:root[data-theme='dark'] .cart-drawer__title,
+:root[data-theme='dark'] .cart-drawer__count,
+:root[data-theme='dark'] .cart-drawer__close,
+:root[data-theme='dark'] .cart-drawer__icon {
+    color: var(--color-blanco);
+}
+
+/* ---------------------------------------------------------------------------
+ * Superficies claras escritas a mano en las hojas por componente.
+ * Son paneles blancos o crema que no dependen de ninguna variable, así que en tema oscuro
+ * aparecían como recuadros encandilantes con texto crema encima, ilegibles.
+ * ------------------------------------------------------------------------- */
+
+:root[data-theme='dark'] .detalle__trust-item,
+:root[data-theme='dark'] .product-list__estado--error,
+:root[data-theme='dark'] .contact-form__input--error,
+:root[data-theme='dark'] .contact-form__textarea--error,
+:root[data-theme='dark'] .admin-form__api-error {
+    background-color: var(--fondo-superficie);
+}
+
+:root[data-theme='dark'] .admin-form__file-label:hover,
+:root[data-theme='dark'] .admin-form__btn-cancelar:hover:not(:disabled) {
+    background-color: #32271f;
+}
+
+:root[data-theme='dark'] .admin-lista__miniatura {
+    background-color: #2d2219;
+}
+
+/* Verde oscuro fijo, pensado para fondo claro. Sobre el oscuro daba 2.1:1. */
+:root[data-theme='dark'] .detalle__cuotas-badge,
+:root[data-theme='dark'] .detalle__material-tag {
+    color: var(--color-verde-salvia);
+    border-color: #a3c48759;
+}
+
+/* La barra superior ya era siena translúcido, solo se la asienta sobre el fondo nuevo. */
+:root[data-theme='dark'] .navbar {
+    background-color: #7a3c20eb;
+    border-bottom-color: var(--borde-sutil);
+    box-shadow: 0 2px 20px #0009;
+}

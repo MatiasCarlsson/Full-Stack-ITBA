@@ -63,8 +63,8 @@ async function actualizarProducto(req, res, next) {
       id,
       req.body,
       {
-        new: true,           // Retorna el documento actualizado
-        runValidators: true, // Aplica las validaciones del esquema
+        returnDocument: 'after', // Retorna el documento ya actualizado
+        runValidators: true,     // Aplica las validaciones del esquema
       }
     );
 

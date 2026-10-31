@@ -18,4 +18,5 @@ export { default as ContactForm } from './contact/ContactForm';
 
 // Common / UI
 export { default as Toast } from './common/Toast';
+export { default as BotonTema } from './common/BotonTema';
 export * from './common/Icons';

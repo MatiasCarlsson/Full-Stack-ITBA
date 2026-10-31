@@ -43,3 +43,141 @@
 .admin-home__action:hover {
   background: #7a3420;
 }
+
+/* ── Listado del catálogo en el panel ──────────────────────────────────────── */
+/* Todo sale de las variables de index.css, así que el tema oscuro lo toma solo. */
+
+.admin-lista__barra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 0 1rem;
+}
+
+.admin-lista__conteo {
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+}
+
+.admin-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-lista__item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background-color: var(--color-fondo-card);
+  border: 1px solid rgba(160, 82, 45, 0.14);
+  border-radius: var(--radio);
+}
+
+.admin-lista__miniatura {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radio);
+  overflow: hidden;
+  background-color: #eed8be;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-lista__miniatura img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-lista__sin-foto {
+  color: var(--color-texto-suave);
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+.admin-lista__datos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.admin-lista__nombre {
+  font-family: var(--font-secundaria);
+  font-size: 1.05rem;
+  color: var(--color-texto);
+}
+
+.admin-lista__nombre:hover {
+  color: var(--color-siena);
+}
+
+.admin-lista__meta {
+  color: var(--color-texto-suave);
+  font-size: 0.82rem;
+}
+
+.admin-lista__acciones {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.admin-lista__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-texto);
+  background: transparent;
+  border: 1.5px solid var(--color-borde, #d9cfc4);
+  border-radius: 6px;
+  transition: background var(--transicion), border-color var(--transicion);
+}
+
+.admin-lista__btn:hover:not(:disabled) {
+  background-color: rgba(160, 82, 45, 0.1);
+  border-color: var(--color-siena);
+}
+
+.admin-lista__btn--borrar:hover:not(:disabled) {
+  background-color: rgba(192, 57, 43, 0.12);
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+.admin-lista__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.admin-estado {
+  color: var(--color-texto-suave);
+  padding: 2rem 0;
+  text-align: center;
+}
+
+/* En pantallas chicas la fila se apila y los botones ocupan el ancho. */
+@media (max-width: 640px) {
+  .admin-lista__item {
+    flex-wrap: wrap;
+  }
+
+  .admin-lista__acciones {
+    width: 100%;
+  }
+
+  .admin-lista__btn {
+    flex: 1;
+    justify-content: center;
+  }
+}

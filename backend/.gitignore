@@ -1,6 +1,10 @@
 node_modules/
 .env
 .env.*
+
+# La plantilla sí va al repo: no tiene secretos y es lo que documenta qué variables
+# necesita el servidor. Sin esta excepción, el .env.* de arriba se la come en silencio.
+!.env.example
 *.log
 npm-debug.log*
 .DS_Store
