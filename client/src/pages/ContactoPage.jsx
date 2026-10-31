@@ -1,6 +1,6 @@
 // pages/ContactoPage.jsx
 // Página /contacto — envuelve el formulario existente con header
-import ContactForm from '../components/ContactForm';
+import { ContactForm } from '../components';
 
 function ContactoPage() {
   return (

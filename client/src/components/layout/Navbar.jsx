@@ -4,6 +4,7 @@
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { CartIcon } from '../common/Icons';
+import BotonTema from '../common/BotonTema';
 import './Navbar.css';
 
 /**
@@ -57,6 +58,9 @@ function Navbar({ cantidadCarrito: propCantidad, onAbrirCarrito: propAbrir }) {
             Contacto
           </NavLink>
         </nav>
+
+        {/* Alterna claro y oscuro */}
+        <BotonTema />
 
         {/* Botón carrito con badge de cantidad */}
         <button

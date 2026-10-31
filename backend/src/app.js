@@ -3,8 +3,8 @@
 
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
 const logger = require('./middlewares/logger');
+const { aplicarSeguridad, sanitizarCuerpo } = require('./middlewares/seguridad');
 const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
 const productosRouter = require('./routes/productos.routes');
 
@@ -12,14 +12,18 @@ const app = express();
 
 // ── Middlewares Globales ────────────────────────────────────────────────────────
 
-// Habilitar CORS para peticiones desde el cliente (localhost:3000 / Vercel)
-app.use(cors());
+// Cabeceras defensivas, CORS acotado a los orígenes propios y límite de peticiones.
+// Reemplaza al cors() abierto: el detalle está en middlewares/seguridad.js
+aplicarSeguridad(app);
 
 // Middleware de logging personalizado: registra [timestamp] METHOD URL
 app.use(logger);
 
 // Parsear cuerpos JSON, incluyendo imágenes convertidas a Data URL desde el panel admin
 app.use(express.json({ limit: '12mb' }));
+
+// Quita del cuerpo las claves que Mongo interpretaría como operadores ($set, $gt, a.b)
+app.use(sanitizarCuerpo);
 
 // Servir imágenes estáticas del frontend
 app.use('/imagenes', express.static(path.join(__dirname, '../../client/public/imagenes')));
