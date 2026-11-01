@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
  */
 async function connectDB() {
   const uri = process.env.MONGODB_URI;
+  const databaseName = process.env.MONGODB_DB_NAME || 'hermanos-jota';
 
   if (!uri) {
     console.error('Error: MONGODB_URI no está definida en las variables de entorno (.env)');
@@ -17,7 +18,7 @@ async function connectDB() {
   }
 
   try {
-    const conn = await mongoose.connect(uri);
+    const conn = await mongoose.connect(uri, { dbName: databaseName });
     console.log(`Conectado a MongoDB Atlas — Base de datos: "${conn.connection.name}"`);
     return conn;
   } catch (error) {
