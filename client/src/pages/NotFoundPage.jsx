@@ -17,9 +17,6 @@ export default function NotFoundPage() {
         justifyContent: 'center',
       }}
     >
-      <span style={{ fontSize: '3.5rem', marginBottom: '1rem' }} aria-hidden="true">
-        🪵
-      </span>
       <h2
         style={{
           fontFamily: 'var(--font-secundaria)',

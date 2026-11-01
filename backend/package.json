@@ -9,6 +9,7 @@
     "dev": "nodemon src/index.js",
     "dev:memoria": "node scripts/servidor-memoria.js",
     "seed": "node scripts/sembrar.js",
+    "seed:upsert": "node src/scripts/seed.js",
     "test:seguridad": "node scripts/probar-seguridad.js"
   },
   "dependencies": {

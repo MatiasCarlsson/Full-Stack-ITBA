@@ -15,7 +15,7 @@ Aplicación web full stack de comercio electrónico para **Hermanos Jota**, mueb
 
 ---
 
-##  Identidad y Manual de Marca
+## Identidad y Manual de Marca
 
 - **Paleta de Colores**:
   - Siena Tostado: `#A0522D` (Color principal, encabezados, botones primarios)
@@ -34,7 +34,7 @@ Aplicación web full stack de comercio electrónico para **Hermanos Jota**, mueb
 
 ---
 
-##  Arquitectura del Proyecto
+## Arquitectura del Proyecto
 
 ```text
 Sprint 3-4/
@@ -116,7 +116,7 @@ Sprint 3-4/
 
 ---
 
-##  API REST — Endpoints (Sprint 5-6)
+## API REST — Endpoints (Sprint 5-6)
 
 Leer el catálogo es público. Crear, editar y eliminar exigen la cabecera `x-admin-token` con el
 valor de `ADMIN_TOKEN`: sin ella la respuesta es `401 Unauthorized`.
@@ -151,7 +151,7 @@ Todos los endpoints responden en formato JSON y manejan códigos de estado HTTP 
 
 ---
 
-##  Rutas del Frontend (React Router DOM)
+## Rutas del Frontend (React Router DOM)
 
 | Ruta | Componente / Página | Descripción |
 | :--- | :--- | :--- |
