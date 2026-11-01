@@ -189,3 +189,24 @@
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+.admin-form__check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-form__check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-siena);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.admin-form__check label {
+  color: var(--color-texto);
+  font-size: 0.92rem;
+  cursor: pointer;
+}

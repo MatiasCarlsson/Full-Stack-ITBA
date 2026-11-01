@@ -1,13 +1,8 @@
-// components/ContactForm.jsx
+// components/contact/ContactForm.jsx
 import { useState, useRef, useEffect } from 'react';
 import { MailIcon } from '../common/Icons';
 import './ContactForm.css';
 
-/**
- * ContactForm — Formulario de contacto con manejo de estado local.
- * Campos: nombre, email, mensaje.
- * Incluye validación de campos, estado de envío y mensaje de confirmación.
- */
 function ContactForm() {
   const [formData, setFormData] = useState({
     nombre: '',

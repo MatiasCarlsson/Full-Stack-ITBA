@@ -5,10 +5,6 @@ import { useCart } from '../../context/CartContext';
 import { CheckIcon, CartIcon } from '../common/Icons';
 import './ProductCard.css';
 
-/**
- * ProductCard — Tarjeta individual de un producto.
- * Puede recibir onAgregarAlCarrito o consumir CartContext directamente.
- */
 function ProductCard({ producto, onAgregarAlCarrito }) {
   const navigate = useNavigate();
 

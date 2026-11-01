@@ -1,10 +1,15 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, within, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
-import ProductCard from './components/ProductCard';
-import ProductDetail from './components/ProductDetail';
-import ContactForm from './components/ContactForm';
+import { ProductCard, ProductDetail, ContactForm } from './components';
 import CrearProductoPage from './pages/CrearProductoPage';
+import { guardarClaveAdmin, olvidarClaveAdmin } from './services/adminAuth';
+
+// Las pantallas de administración viven detrás de una clave guardada en sessionStorage.
+// Si quedara de una prueba a la otra, el orden de ejecución cambiaría el resultado.
+afterEach(() => {
+  olvidarClaveAdmin();
+});
 
 test('renderiza el nombre de la marca Hermanos Jota', () => {
   render(<App />);
@@ -71,7 +76,21 @@ test('ContactForm renderiza campos de nombre, email, mensaje y botón de envío'
   expect(screen.getByRole('button', { name: /enviar consulta/i })).toBeInTheDocument();
 });
 
-test('CrearProductoPage renderiza campos de formulario de alta de producto', () => {
+
+test('sin la clave de administración, el alta de producto no se muestra', () => {
+  render(
+    <MemoryRouter>
+      <CrearProductoPage />
+    </MemoryRouter>
+  );
+  expect(screen.getByLabelText(/clave de administración/i)).toBeInTheDocument();
+  expect(screen.queryByRole('heading', { name: /alta de producto/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /guardar producto/i })).not.toBeInTheDocument();
+});
+
+test('con la clave cargada, CrearProductoPage renderiza los campos del formulario', () => {
+  guardarClaveAdmin('clave-de-prueba');
+
   render(
     <MemoryRouter>
       <CrearProductoPage />
@@ -82,4 +101,54 @@ test('CrearProductoPage renderiza campos de formulario de alta de producto', () 
   expect(screen.getByLabelText(/precio/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/stock/i)).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /guardar producto/i })).toBeInTheDocument();
+});
+
+test('el formulario expone los campos del modelo que antes no se podían editar', () => {
+  guardarClaveAdmin('clave-de-prueba');
+
+  render(
+    <MemoryRouter>
+      <CrearProductoPage />
+    </MemoryRouter>
+  );
+  expect(screen.getByLabelText(/dimensiones/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/materiales/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/destacadas de la portada/i)).toBeInTheDocument();
+});
+
+test('el formulario de alta no envía nada si faltan nombre y precio', () => {
+  guardarClaveAdmin('clave-de-prueba');
+
+  render(
+    <MemoryRouter>
+      <CrearProductoPage />
+    </MemoryRouter>
+  );
+  fireEvent.click(screen.getByRole('button', { name: /guardar producto/i }));
+
+  expect(screen.getByText(/el nombre es obligatorio/i)).toBeInTheDocument();
+  expect(screen.getByText(/el precio es obligatorio/i)).toBeInTheDocument();
+});
+
+
+test('el botón de tema alterna el atributo data-theme del documento', () => {
+  render(<App />);
+
+  const boton = screen.getByRole('button', { name: /cambiar al tema (oscuro|claro)/i });
+  const inicial = document.documentElement.getAttribute('data-theme');
+
+  fireEvent.click(boton);
+  const despues = document.documentElement.getAttribute('data-theme');
+  expect(despues).not.toBe(inicial);
+
+  fireEvent.click(boton);
+  expect(document.documentElement.getAttribute('data-theme')).toBe(inicial);
+});
+
+test('el tema elegido queda guardado para la próxima visita', () => {
+  window.localStorage.removeItem('hermanos-jota-tema');
+  render(<App />);
+
+  fireEvent.click(screen.getByRole('button', { name: /cambiar al tema (oscuro|claro)/i }));
+  expect(window.localStorage.getItem('hermanos-jota-tema')).toMatch(/^(claro|oscuro)$/);
 });

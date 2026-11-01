@@ -1,6 +1,6 @@
 // pages/CatalogoPage.jsx
 // Página /productos — catálogo de productos sin hero section
-import ProductList from '../components/ProductList';
+import { ProductList } from '../components';
 
 function CatalogoPage({ onVerDetalle, onAgregarAlCarrito }) {
   return (

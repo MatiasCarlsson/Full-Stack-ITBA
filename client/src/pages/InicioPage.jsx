@@ -1,6 +1,6 @@
 // pages/InicioPage.jsx
 // Página de inicio: hero section + catálogo completo de productos
-import ProductList from '../components/ProductList';
+import { ProductList } from '../components';
 
 function InicioPage({ onVerDetalle, onAgregarAlCarrito }) {
   return (

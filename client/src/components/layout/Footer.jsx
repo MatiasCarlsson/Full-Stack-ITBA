@@ -1,9 +1,6 @@
-// components/Footer.jsx
+// components/layout/Footer.jsx
 import './Footer.css';
 
-/**
- * Footer — Pie de página con info de la marca Hermanos Jota.
- */
 function Footer() {
   return (
     <footer className="footer">

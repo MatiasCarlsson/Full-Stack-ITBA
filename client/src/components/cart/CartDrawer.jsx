@@ -1,12 +1,8 @@
 import { useEffect, useRef, useMemo } from 'react';
 import { useCart } from '../../context/CartContext';
-import { CartIcon } from '../common/Icons';
+import { CartIcon, CloseIcon, TrashIcon } from '../common/Icons';
 import './CartDrawer.css';
 
-/**
- * CartDrawer — Panel lateral deslizable para gestionar los ítems del carrito.
- * Lee de CartContext o de props para máxima flexibilidad.
- */
 function CartDrawer({
   abierto: propAbierto,
   onCerrar: propCerrar,
@@ -74,7 +70,7 @@ function CartDrawer({
 
   return (
     <div
-      className="cart-overlay"
+      className="cart-backdrop"
       onClick={onCerrar}
       role="dialog"
       aria-modal="true"
@@ -87,9 +83,9 @@ function CartDrawer({
       >
         {/* Cabecera */}
         <div className="cart-drawer__header">
-          <div className="cart-drawer__titulo-wrap">
-            <CartIcon size={20} />
-            <h2 className="cart-drawer__titulo">Tu Carrito</h2>
+          <div className="cart-drawer__title-wrap">
+            <CartIcon className="cart-drawer__icon" size={20} />
+            <h2 className="cart-drawer__title">Tu Carrito</h2>
             <span className="cart-drawer__count">
               ({items.reduce((acc, i) => acc + i.cantidad, 0)})
             </span>
@@ -100,7 +96,7 @@ function CartDrawer({
             onClick={onCerrar}
             aria-label="Cerrar carrito"
           >
-            ✕
+            <CloseIcon size={18} />
           </button>
         </div>
 
@@ -151,19 +147,19 @@ function CartDrawer({
                       <span className="cart-item__subtotal">{subtotalFormateado}</span>
 
                       {/* Control de cantidad */}
-                      <div className="cart-item__qty">
+                      <div className="cart-item__cantidad-ctrl">
                         <button
                           type="button"
-                          className="cart-item__qty-btn"
+                          className="cart-item__btn-qty"
                           onClick={() => onModificarCantidad(itemId, -1)}
                           aria-label={`Restar una unidad de ${item.nombre}`}
                         >
                           −
                         </button>
-                        <span className="cart-item__qty-num">{item.cantidad}</span>
+                        <span className="cart-item__qty">{item.cantidad}</span>
                         <button
                           type="button"
-                          className="cart-item__qty-btn"
+                          className="cart-item__btn-qty"
                           onClick={() => onModificarCantidad(itemId, 1)}
                           disabled={item.stock && item.cantidad >= item.stock}
                           aria-label={`Sumar una unidad de ${item.nombre}`}
@@ -176,11 +172,11 @@ function CartDrawer({
                     {/* Botón eliminar */}
                     <button
                       type="button"
-                      className="cart-item__remove"
+                      className="cart-item__borrar"
                       onClick={() => onEliminarItem(itemId)}
                       aria-label={`Eliminar ${item.nombre} del carrito`}
                     >
-                      🗑
+                      <TrashIcon size={16} />
                     </button>
                   </li>
                 );
@@ -194,15 +190,15 @@ function CartDrawer({
           <div className="cart-drawer__footer">
             <div className="cart-drawer__total-row">
               <span className="cart-drawer__total-label">Total estimado:</span>
-              <span className="cart-drawer__total-val">{totalFormateado}</span>
+              <span className="cart-drawer__total-monto">{totalFormateado}</span>
             </div>
-            <p className="cart-drawer__envio-nota">
+            <p className="cart-drawer__eco-note">
               Costos de envío y entrega coordinada calculados en el checkout.
             </p>
 
             <button
               type="button"
-              className="btn btn--primario cart-drawer__btn-checkout"
+              className="btn btn--primario cart-drawer__checkout"
               onClick={onFinalizarCompra}
             >
               Finalizar Pedido
@@ -210,7 +206,7 @@ function CartDrawer({
 
             <button
               type="button"
-              className="cart-drawer__btn-vaciar"
+              className="cart-drawer__vaciar"
               onClick={onVaciarCarrito}
             >
               Vaciar carrito
