@@ -27,8 +27,16 @@ function errorHandler(err, req, res, next) {
   // Error de formato en ID de MongoDB (CastError)
   if (err.name === 'CastError') {
     return res.status(400).json({
-      error: 'ID de producto inválido',
+      error: 'ID inválido',
       mensaje: `El valor "${err.value}" no es un identificador válido de MongoDB`,
+    });
+  }
+
+  // Errores de autenticación JWT
+  if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+    return res.status(401).json({
+      error: 'Sesión inválida',
+      mensaje: 'Tu sesión venció o no es válida. Volvé a iniciar sesión.',
     });
   }
 
