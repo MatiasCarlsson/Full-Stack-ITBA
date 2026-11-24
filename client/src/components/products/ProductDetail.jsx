@@ -1,6 +1,8 @@
 // components/products/ProductDetail.jsx
-import { useState } from 'react';
-import { useCart } from '../../context/CartContext';
+// Ficha editorial individual optimizada con formateo cacheado y limpieza segura de timers
+
+import { useState, useRef, useEffect } from 'react';
+import { useOptionalCart } from '../../context/CartContext';
 import {
   CheckIcon,
   CartIcon,
@@ -9,46 +11,31 @@ import {
   LeafIcon,
   RulerIcon,
 } from '../common/Icons';
+import { formatearPrecio } from '../../utils/format';
 import './ProductDetail.css';
 
-/**
- * ProductDetail — Vista editorial y de alta conversión para un producto individual.
- */
 function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito }) {
-  let contextCart = null;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    contextCart = useCart();
-  } catch {
-    contextCart = null;
-  }
+  const contextCart = useOptionalCart();
 
   const [cantidad, setCantidad] = useState(1);
   const [agregado, setAgregado] = useState(false);
+  const timerRef = useRef(null);
 
-  // Formato de moneda para Argentina (ARS)
-  const precioFormateado = new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    maximumFractionDigits: 0,
-  }).format(producto.precio);
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
-  // Cálculo de 3 cuotas sin interés
-  const cuotaFormateada = new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    maximumFractionDigits: 0,
-  }).format(Math.round(producto.precio / 3));
+  const precioFormateado = formatearPrecio(producto.precio);
+  const cuotaFormateada = formatearPrecio(Math.round(producto.precio / 3));
+  const precioTransferencia = formatearPrecio(Math.round(producto.precio * 0.9));
 
-  // Cálculo de precio con transferencia (10% descuento)
-  const precioTransferencia = new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    maximumFractionDigits: 0,
-  }).format(Math.round(producto.precio * 0.9));
+  const sinStock = typeof producto.stock === 'number' && producto.stock <= 0;
 
-  const stockMsg =
-    producto.stock > 5
+  const stockMsg = sinStock
+    ? { clase: 'detalle__stock--bajo', texto: 'Sin stock disponible por el momento' }
+    : producto.stock > 5
       ? { clase: 'detalle__stock--disponible', texto: `${producto.stock} unidades listas en taller` }
       : { clase: 'detalle__stock--bajo', texto: `Últimas ${producto.stock} unidades disponibles` };
 
@@ -56,20 +43,23 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
     setCantidad((prev) => {
       const next = prev + delta;
       if (next < 1) return 1;
-      if (producto.stock && next > producto.stock) return producto.stock;
+      if (typeof producto.stock === 'number' && next > producto.stock) return producto.stock;
       return next;
     });
   };
 
   const handleAgregar = () => {
+    if (sinStock) return;
     if (onAgregarAlCarrito) {
       onAgregarAlCarrito(producto, cantidad);
     } else if (contextCart) {
       contextCart.agregarAlCarrito(producto, cantidad);
     }
     setAgregado(true);
-    setTimeout(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
       setAgregado(false);
+      timerRef.current = null;
     }, 2200);
   };
 
@@ -77,23 +67,22 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
 
   return (
     <article className="detalle" aria-label={`Ficha técnica de ${producto.nombre}`}>
-
-      {/* ── Breadcrumb de navegación superior ── */}
+      {/* Breadcrumb */}
       <nav className="detalle__breadcrumb" aria-label="Migas de pan">
-        {onVolver && (
+        {onVolver ? (
           <>
             <button type="button" className="detalle__breadcrumb-link" onClick={onVolver}>
               Catálogo
             </button>
             <span className="detalle__breadcrumb-sep" aria-hidden="true">/</span>
           </>
-        )}
+        ) : null}
         <span className="detalle__breadcrumb-cat">{producto.categoria}</span>
         <span className="detalle__breadcrumb-sep" aria-hidden="true">/</span>
         <span className="detalle__breadcrumb-current" aria-current="page">{producto.nombre}</span>
       </nav>
 
-      {/* ── Columna Izquierda: Escenario Visual de la Pieza ── */}
+      {/* Columna Izquierda */}
       <div className="detalle__visual">
         <div className="detalle__img-wrapper">
           <img
@@ -106,9 +95,9 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
             }}
           />
 
-          {producto.destacado && (
+          {producto.destacado ? (
             <span className="detalle__destacado-badge">Pieza Destacada</span>
-          )}
+          ) : null}
 
           <div className="detalle__sello">
             <LeafIcon size={16} />
@@ -116,7 +105,6 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
           </div>
         </div>
 
-        {/* Cita artesanal */}
         <div className="detalle__quote">
           <p>
             Cada veta cuenta la historia de manos expertas y materiales nobles que envejecen con carácter.
@@ -125,19 +113,17 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
         </div>
       </div>
 
-      {/* ── Columna Derecha: Información Editorial y Conversión ── */}
+      {/* Columna Derecha */}
       <div className="detalle__info">
-
         <div className="detalle__header">
           <span className="detalle__categoria">{producto.categoria}</span>
           <h1 className="detalle__nombre">{producto.nombre}</h1>
         </div>
 
-        {/* Bloque de Precios y Financiación */}
         <div className="detalle__precio-card">
           <div className="detalle__precio-main">
             <span className="detalle__precio">{precioFormateado}</span>
-            {producto.precioUnidad && <span className="detalle__precio-unit">/ unidad</span>}
+            {producto.precioUnidad ? <span className="detalle__precio-unit">/ unidad</span> : null}
           </div>
 
           <div className="detalle__cuotas">
@@ -150,18 +136,16 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
           </p>
         </div>
 
-        {/* Narrativa de producto */}
         <div className="detalle__descripcion-wrap">
           <h3 className="detalle__subtitulo">Historia &amp; Diseño</h3>
           <p className="detalle__descripcion">{producto.descripcion}</p>
         </div>
 
-        {/* Ficha técnica y especificaciones */}
         <div className="detalle__specs">
           <h3 className="detalle__subtitulo">Especificaciones Técnicas</h3>
 
           <div className="detalle__specs-grid">
-            {producto.dimensiones && (
+            {producto.dimensiones ? (
               <div className="detalle__spec-item">
                 <span className="detalle__spec-icon" aria-hidden="true"><RulerIcon size={16} /></span>
                 <div>
@@ -169,7 +153,7 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
                   <span className="detalle__spec-val">{producto.dimensiones}</span>
                 </div>
               </div>
-            )}
+            ) : null}
 
             <div className="detalle__spec-item">
               <span className="detalle__spec-icon" aria-hidden="true"><LeafIcon size={16} /></span>
@@ -180,8 +164,7 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
             </div>
           </div>
 
-          {/* Tags de materiales */}
-          {producto.materiales && (
+          {Array.isArray(producto.materiales) && producto.materiales.length > 0 ? (
             <div className="detalle__materiales-wrap">
               <span className="detalle__spec-label">Materiales y Acabados:</span>
               <div className="detalle__materiales-lista">
@@ -190,10 +173,10 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
                 ))}
               </div>
             </div>
-          )}
+          ) : null}
         </div>
 
-        {/* Selector de cantidad y acciones de compra */}
+        {/* Compra */}
         <div className="detalle__compra-box">
           <div className="detalle__qty-row">
             <label className="detalle__qty-label" htmlFor="qty-input">Cantidad:</label>
@@ -202,7 +185,7 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
                 type="button"
                 className="detalle__qty-btn"
                 onClick={() => handleModificarQty(-1)}
-                disabled={cantidad <= 1}
+                disabled={sinStock || cantidad <= 1}
                 aria-label="Restar una unidad"
               >
                 −
@@ -212,26 +195,28 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
                 type="button"
                 className="detalle__qty-btn"
                 onClick={() => handleModificarQty(1)}
-                disabled={producto.stock && cantidad >= producto.stock}
+                disabled={sinStock || (typeof producto.stock === 'number' && cantidad >= producto.stock)}
                 aria-label="Sumar una unidad"
               >
                 +
               </button>
             </div>
-            {producto.stock && (
+            {typeof producto.stock === 'number' && producto.stock > 0 ? (
               <span className="detalle__qty-max">Máx. {producto.stock} un.</span>
-            )}
+            ) : null}
           </div>
 
-          {/* Botones de acción principal */}
           <div className="detalle__acciones">
             <button
               type="button"
-              className={`btn btn--primario detalle__btn-add ${agregado ? 'btn--agregado' : ''}`}
+              className={`btn btn--primario detalle__btn-add${agregado ? ' btn--agregado' : ''}`}
               onClick={handleAgregar}
+              disabled={sinStock}
               aria-label={`Agregar ${producto.nombre} al carrito`}
             >
-              {agregado ? (
+              {sinStock ? (
+                <span>Sin stock disponible</span>
+              ) : agregado ? (
                 <span className="btn-agregado-wrap">
                   <CheckIcon size={18} /> ¡{cantidad > 1 ? `${cantidad} piezas agregadas` : 'Agregado al carrito'}!
                 </span>
@@ -242,7 +227,7 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
               )}
             </button>
 
-            {handleAbrir && (
+            {handleAbrir ? (
               <button
                 type="button"
                 className="btn btn--carrito-link detalle__btn-cart"
@@ -251,11 +236,10 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
               >
                 <CartIcon size={18} /> Ver carrito
               </button>
-            )}
+            ) : null}
           </div>
         </div>
 
-        {/* Garantías y sellos de confianza (Trust Badges) */}
         <div className="detalle__trust-bar">
           <div className="detalle__trust-item">
             <ShieldIcon size={22} className="detalle__trust-icon" />
@@ -281,9 +265,7 @@ function ProductDetail({ producto, onVolver, onAgregarAlCarrito, onAbrirCarrito 
             </div>
           </div>
         </div>
-
       </div>
-
     </article>
   );
 }

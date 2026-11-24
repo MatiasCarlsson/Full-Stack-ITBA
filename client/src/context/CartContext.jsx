@@ -1,53 +1,109 @@
 // context/CartContext.jsx
-// Contexto global del carrito de compras y notificaciones toast
-// Elimina el prop-drilling en la aplicación y optimiza re-renders
+// Contexto global del carrito con persistencia localStorage versionada y notificaciones Toast
 
-import { createContext, useContext, useState, useMemo, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+} from 'react';
 
+const CART_STORAGE_KEY = 'hermanos-jota-carrito-v1';
 const CartContext = createContext(null);
 
+function leerCarritoGuardado() {
+  try {
+    const raw = window.localStorage.getItem(CART_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function serializarItemMinimo(producto, cantidad) {
+  return {
+    _id: producto._id || producto.id,
+    nombre: producto.nombre,
+    precio: Number(producto.precio) || 0,
+    imagenUrl: producto.imagenUrl || producto.imagen || '',
+    stock: typeof producto.stock === 'number' ? producto.stock : undefined,
+    categoria: producto.categoria || '',
+    cantidad,
+  };
+}
+
 export function CartProvider({ children }) {
-  const [carrito, setCarrito] = useState([]);
+  const [carrito, setCarrito] = useState(() => leerCarritoGuardado());
   const [carritoAbierto, setCarritoAbierto] = useState(false);
   const [toastMensaje, setToastMensaje] = useState(null);
+  const toastTimerRef = useRef(null);
 
-  const mostrarToast = useCallback((mensaje) => {
-    setToastMensaje(mensaje);
-    const timer = setTimeout(() => {
-      setToastMensaje(null);
-    }, 2500);
-    return () => clearTimeout(timer);
+  // Persiste cambios del carrito en localStorage para no perder piezas al recargar o iniciar sesión
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(carrito));
+    } catch {
+      // Silencioso en navegación privada o almacenamiento lleno
+    }
+  }, [carrito]);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
   }, []);
 
-  const agregarAlCarrito = useCallback((producto, cantidad = 1) => {
-    const qty = typeof cantidad === 'number' && cantidad > 0 ? cantidad : 1;
-    const productoId = producto._id || producto.id;
+  const mostrarToast = useCallback((mensaje) => {
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current);
+    }
+    setToastMensaje(mensaje);
+    toastTimerRef.current = setTimeout(() => {
+      setToastMensaje(null);
+      toastTimerRef.current = null;
+    }, 2800);
+  }, []);
 
-    setCarrito((prev) => {
-      const existe = prev.find((item) => (item._id || item.id) === productoId);
-      if (existe) {
-        return prev.map((item) =>
-          (item._id || item.id) === productoId
-            ? { ...item, cantidad: item.cantidad + qty }
-            : item
-        );
-      }
-      return [...prev, { ...producto, cantidad: qty }];
-    });
+  const agregarAlCarrito = useCallback(
+    (producto, cantidad = 1) => {
+      const qty = typeof cantidad === 'number' && cantidad > 0 ? cantidad : 1;
+      const productoId = producto._id || producto.id;
 
-    mostrarToast(
-      qty > 1
-        ? `${qty}x "${producto.nombre}" agregados al carrito`
-        : `"${producto.nombre}" agregado al carrito`
-    );
-  }, [mostrarToast]);
+      setCarrito((prev) => {
+        const existe = prev.find((item) => (item._id || item.id) === productoId);
+        if (existe) {
+          const maxStock = typeof producto.stock === 'number' ? producto.stock : Infinity;
+          const nuevaCantidad = Math.min(existe.cantidad + qty, maxStock);
+          return prev.map((item) =>
+            (item._id || item.id) === productoId
+              ? { ...item, cantidad: nuevaCantidad }
+              : item
+          );
+        }
+        return [...prev, serializarItemMinimo(producto, qty)];
+      });
+
+      mostrarToast(
+        qty > 1
+          ? `${qty}x "${producto.nombre}" agregados al carrito`
+          : `"${producto.nombre}" agregado al carrito`
+      );
+    },
+    [mostrarToast]
+  );
 
   const modificarCantidad = useCallback((id, delta) => {
     setCarrito((prev) =>
       prev
         .map((item) => {
           if ((item._id || item.id) === id) {
-            const nuevaCantidad = item.cantidad + delta;
+            const maxStock = typeof item.stock === 'number' ? item.stock : Infinity;
+            const nuevaCantidad = Math.min(item.cantidad + delta, maxStock);
             return nuevaCantidad > 0 ? { ...item, cantidad: nuevaCantidad } : null;
           }
           return item;
@@ -72,45 +128,46 @@ export function CartProvider({ children }) {
     setCarritoAbierto(false);
   }, []);
 
-  const finalizarCompra = useCallback(() => {
-    alert(
-      '¡Muchas gracias por tu pedido en Hermanos Jota!\n\nCoordinaremos la entrega de tus piezas y los detalles de pago a la brevedad.'
-    );
-    setCarrito([]);
-    setCarritoAbierto(false);
-  }, []);
-
-  const cantidadCarrito = useMemo(() => {
-    return carrito.reduce((total, item) => total + item.cantidad, 0);
+  const { cantidadCarrito, totalCarrito } = useMemo(() => {
+    let cantidad = 0;
+    let total = 0;
+    for (const item of carrito) {
+      cantidad += item.cantidad;
+      total += item.precio * item.cantidad;
+    }
+    return { cantidadCarrito: cantidad, totalCarrito: total };
   }, [carrito]);
 
-  const value = useMemo(() => ({
-    carrito,
-    carritoAbierto,
-    cantidadCarrito,
-    toastMensaje,
-    abrirCarrito,
-    cerrarCarrito,
-    agregarAlCarrito,
-    modificarCantidad,
-    eliminarDelCarrito,
-    vaciarCarrito,
-    finalizarCompra,
-    mostrarToast,
-  }), [
-    carrito,
-    carritoAbierto,
-    cantidadCarrito,
-    toastMensaje,
-    abrirCarrito,
-    cerrarCarrito,
-    agregarAlCarrito,
-    modificarCantidad,
-    eliminarDelCarrito,
-    vaciarCarrito,
-    finalizarCompra,
-    mostrarToast,
-  ]);
+  const value = useMemo(
+    () => ({
+      carrito,
+      carritoAbierto,
+      cantidadCarrito,
+      totalCarrito,
+      toastMensaje,
+      abrirCarrito,
+      cerrarCarrito,
+      agregarAlCarrito,
+      modificarCantidad,
+      eliminarDelCarrito,
+      vaciarCarrito,
+      mostrarToast,
+    }),
+    [
+      carrito,
+      carritoAbierto,
+      cantidadCarrito,
+      totalCarrito,
+      toastMensaje,
+      abrirCarrito,
+      cerrarCarrito,
+      agregarAlCarrito,
+      modificarCantidad,
+      eliminarDelCarrito,
+      vaciarCarrito,
+      mostrarToast,
+    ]
+  );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
@@ -121,4 +178,8 @@ export function useCart() {
     throw new Error('useCart debe ser utilizado dentro de un CartProvider');
   }
   return context;
+}
+
+export function useOptionalCart() {
+  return useContext(CartContext);
 }

@@ -1,51 +1,52 @@
 // components/products/ProductCard.jsx
-import { useState } from 'react';
+// Tarjeta de producto memoizada con formateo cacheado y limpieza segura de temporizadores
+
+import { memo, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
+import { useOptionalCart } from '../../context/CartContext';
 import { CheckIcon, CartIcon } from '../common/Icons';
+import { formatearPrecio } from '../../utils/format';
 import './ProductCard.css';
 
-function ProductCard({ producto, onAgregarAlCarrito }) {
+const ProductCard = memo(function ProductCard({ producto, onAgregarAlCarrito }) {
   const navigate = useNavigate();
-
-  let contextCart = null;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    contextCart = useCart();
-  } catch {
-    contextCart = null;
-  }
+  const contextCart = useOptionalCart();
 
   const [agregado, setAgregado] = useState(false);
+  const timerRef = useRef(null);
 
-  // Compatibilidad: 'imagenUrl' (MongoDB) o 'imagen' (datos locales Sprint 3-4)
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
   const imagenSrc = producto.imagenUrl || producto.imagen || '/imagenes/logo.svg';
-  // Compatibilidad: '_id' (MongoDB) o 'id' (datos locales)
   const productoId = producto._id || producto.id;
+  const sinStock = typeof producto.stock === 'number' && producto.stock <= 0;
+  const precioFormateado = formatearPrecio(producto.precio);
+
   const irAlDetalle = () => navigate(`/productos/${productoId}`);
 
-  const precioFormateado = new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    maximumFractionDigits: 0,
-  }).format(producto.precio);
-
   const handleAgregar = () => {
+    if (sinStock) return;
     if (onAgregarAlCarrito) {
       onAgregarAlCarrito(producto);
     } else if (contextCart) {
       contextCart.agregarAlCarrito(producto);
     }
+
     setAgregado(true);
-    setTimeout(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
       setAgregado(false);
+      timerRef.current = null;
     }, 1200);
   };
 
   return (
     <article className="product-card">
-
-      {/* Imagen con badge opcional — clickeable para abrir el detalle */}
+      {/* Imagen clickeable con pista visual sutil */}
       <div
         className="product-card__img-wrapper"
         onClick={irAlDetalle}
@@ -64,19 +65,25 @@ function ProductCard({ producto, onAgregarAlCarrito }) {
           src={imagenSrc}
           alt={producto.nombre}
           loading="lazy"
+          decoding="async"
           onError={(e) => {
             e.currentTarget.onerror = null;
             e.currentTarget.src = '/imagenes/logo.svg';
           }}
         />
-        {producto.destacado && (
+        <div className="product-card__hover-cue" aria-hidden="true">
+          <span>Ver ficha técnica</span>
+        </div>
+        {producto.destacado ? (
           <span className="product-card__badge">Destacado</span>
-        )}
+        ) : null}
       </div>
 
-      {/* Cuerpo de la tarjeta */}
+      {/* Cuerpo */}
       <div className="product-card__body">
-        <span className="product-card__categoria">{producto.categoria}</span>
+        {producto.categoria ? (
+          <span className="product-card__categoria">{producto.categoria}</span>
+        ) : null}
         <h3
           className="product-card__nombre"
           onClick={irAlDetalle}
@@ -89,20 +96,25 @@ function ProductCard({ producto, onAgregarAlCarrito }) {
           {producto.nombre}
         </h3>
         <p className="product-card__precio">{precioFormateado}</p>
-        <p className="product-card__descripcion">{producto.descripcion}</p>
+        {producto.descripcion ? (
+          <p className="product-card__descripcion">{producto.descripcion}</p>
+        ) : null}
       </div>
 
-      {/* Pie de la tarjeta: Botón Agregar */}
+      {/* Acción principal */}
       <div className="product-card__footer">
         <button
           type="button"
-          className={`btn btn--primario product-card__btn ${
-            agregado ? 'btn--agregado' : ''
+          className={`btn btn--primario product-card__btn${
+            agregado ? ' btn--agregado' : ''
           }`}
           onClick={handleAgregar}
+          disabled={sinStock}
           aria-label={`Agregar ${producto.nombre} al carrito`}
         >
-          {agregado ? (
+          {sinStock ? (
+            <span>Sin stock</span>
+          ) : agregado ? (
             <span className="btn-agregado-wrap">
               <CheckIcon size={16} /> ¡Agregado!
             </span>
@@ -113,9 +125,8 @@ function ProductCard({ producto, onAgregarAlCarrito }) {
           )}
         </button>
       </div>
-
     </article>
   );
-}
+});
 
 export default ProductCard;
