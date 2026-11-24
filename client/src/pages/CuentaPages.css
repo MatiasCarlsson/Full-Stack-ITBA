@@ -1,0 +1,812 @@
+/* pages/CuentaPages.css — Estilos editoriales para Login, Registro, Perfil y Mis Pedidos */
+
+.cuenta-page {
+  flex: 1;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+/* ── Auth Layout (Login / Registro) ── */
+.auth-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  background-color: var(--color-fondo-card);
+  border: 1px solid rgba(160, 82, 45, 0.14);
+  border-radius: var(--radio-lg);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+}
+
+.auth-aside {
+  background: linear-gradient(155deg, #4f2c1b 0%, #2c180e 100%);
+  color: #f5e6d3;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.auth-aside::after {
+  content: '';
+  position: absolute;
+  inset: 1.25rem;
+  border: 1px solid rgba(212, 164, 55, 0.22);
+  border-radius: calc(var(--radio-lg) - 4px);
+  pointer-events: none;
+}
+
+.auth-aside__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1.5rem;
+}
+
+.auth-aside__kicker {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #e2bb5e;
+  letter-spacing: 0.04em;
+}
+
+.auth-aside__headline {
+  font-family: var(--font-secundaria);
+  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fdf6ee;
+}
+
+.auth-aside__text {
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: rgba(245, 230, 211, 0.84);
+  max-width: 38ch;
+}
+
+.auth-aside__facts {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(245, 230, 211, 0.16);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.auth-aside__facts dt {
+  font-size: 0.78rem;
+  color: rgba(245, 230, 211, 0.68);
+  margin-bottom: 0.2rem;
+}
+
+.auth-aside__facts dd {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fdf6ee;
+}
+
+.auth-card {
+  padding: 2.75rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-card__header {
+  margin-bottom: 1.75rem;
+}
+
+.auth-card__title {
+  font-family: var(--font-secundaria);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-siena);
+  line-height: 1.2;
+  margin-bottom: 0.45rem;
+}
+
+.auth-card__subtitle {
+  font-size: 0.95rem;
+  color: var(--color-texto-suave);
+  max-width: 48ch;
+}
+
+.auth-card__footer {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(160, 82, 45, 0.12);
+  font-size: 0.92rem;
+  color: var(--color-texto-suave);
+}
+
+.auth-card__link {
+  color: var(--color-siena);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.auth-card__link:hover {
+  color: var(--color-siena-oscuro);
+}
+
+/* ── Formularios y controles compartidos ── */
+.cuenta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.cuenta-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cuenta-campo__label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.cuenta-campo__opcional {
+  font-weight: 400;
+  color: var(--color-texto-suave);
+}
+
+.cuenta-campo__input {
+  width: 100%;
+  padding: 0.78rem 0.95rem;
+  font-family: var(--font-primaria);
+  font-size: 0.95rem;
+  color: var(--color-texto);
+  background-color: var(--color-blanco);
+  border: 1.5px solid rgba(160, 82, 45, 0.22);
+  border-radius: var(--radio);
+  transition: border-color var(--transicion), box-shadow var(--transicion);
+}
+
+.cuenta-campo__input:focus {
+  outline: none;
+  border-color: var(--color-siena);
+  box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.14);
+}
+
+.cuenta-campo__input--error {
+  border-color: #c0392b;
+}
+
+.cuenta-campo__input--readonly {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.cuenta-campo__password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cuenta-campo__input--con-btn {
+  padding-right: 2.75rem;
+}
+
+.cuenta-campo__toggle {
+  position: absolute;
+  right: 0.55rem;
+  background: none;
+  border: none;
+  color: var(--color-texto-suave);
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transicion), background var(--transicion);
+}
+
+.cuenta-campo__toggle:hover {
+  color: var(--color-siena);
+  background: rgba(160, 82, 45, 0.08);
+}
+
+.cuenta-campo__error {
+  font-size: 0.82rem;
+  color: #c0392b;
+  font-weight: 500;
+}
+
+/* Medidor de seguridad de contraseña */
+.password-meter {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+.password-meter__bars {
+  display: flex;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.password-meter__bar {
+  height: 4px;
+  flex: 1;
+  border-radius: 99px;
+  background-color: rgba(160, 82, 45, 0.15);
+  transition: background-color 0.25s ease;
+}
+
+.password-meter__bar--debil {
+  background-color: #c0392b;
+}
+
+.password-meter__bar--media {
+  background-color: var(--color-vara-de-oro);
+}
+
+.password-meter__bar--fuerte {
+  background-color: var(--color-verde-salvia);
+}
+
+.password-meter__label {
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+  white-space: nowrap;
+}
+
+/* Alertas */
+.cuenta-alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radio);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  line-height: 1.45;
+}
+
+.cuenta-alerta svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.cuenta-alerta--error {
+  background-color: #fdf3f2;
+  color: #9e2a1f;
+  border: 1px solid rgba(192, 57, 43, 0.28);
+}
+
+.cuenta-alerta--exito {
+  background-color: rgba(135, 169, 107, 0.14);
+  color: #365222;
+  border: 1px solid rgba(135, 169, 107, 0.38);
+}
+
+/* Botones de cuenta */
+.cuenta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.7rem 1.35rem;
+  border-radius: var(--radio);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1.5px solid transparent;
+  transition: background var(--transicion), color var(--transicion), border-color var(--transicion), transform 0.12s ease;
+  text-decoration: none;
+}
+
+.cuenta-btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.cuenta-btn:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+.cuenta-btn--primario {
+  background-color: var(--color-siena);
+  color: var(--color-blanco);
+}
+
+.cuenta-btn--primario:hover:not(:disabled) {
+  background-color: var(--color-siena-oscuro);
+}
+
+.cuenta-btn--secundario {
+  background-color: transparent;
+  border-color: var(--color-siena);
+  color: var(--color-siena);
+}
+
+.cuenta-btn--secundario:hover:not(:disabled) {
+  background-color: var(--color-siena);
+  color: var(--color-blanco);
+}
+
+.cuenta-btn--fantasma {
+  background-color: transparent;
+  border-color: rgba(160, 82, 45, 0.22);
+  color: var(--color-texto-suave);
+}
+
+.cuenta-btn--fantasma:hover:not(:disabled) {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+.cuenta-btn--full {
+  width: 100%;
+}
+
+/* ── Perfil ── */
+.perfil-container,
+.pedidos-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding: 1.75rem 2rem;
+  background-color: var(--color-fondo-card);
+  border: 1px solid rgba(160, 82, 45, 0.14);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra);
+}
+
+.perfil-identidad {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+}
+
+.perfil-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-siena), var(--color-siena-oscuro));
+  color: var(--color-blanco);
+  font-family: var(--font-secundaria);
+  font-size: 1.35rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.perfil-nombre {
+  font-family: var(--font-secundaria);
+  font-size: 1.7rem;
+  color: var(--color-texto);
+  line-height: 1.2;
+}
+
+.perfil-email {
+  font-size: 0.92rem;
+  color: var(--color-texto-suave);
+}
+
+.perfil-fecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--color-verde-salvia);
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.perfil-header__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.perfil-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.85fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.perfil-card {
+  background-color: var(--color-fondo-card);
+  border: 1px solid rgba(160, 82, 45, 0.14);
+  border-radius: var(--radio-lg);
+  padding: 2rem;
+  box-shadow: var(--sombra);
+}
+
+.perfil-card__title {
+  font-family: var(--font-secundaria);
+  font-size: 1.35rem;
+  color: var(--color-siena);
+  margin-bottom: 0.4rem;
+}
+
+.perfil-card__desc {
+  font-size: 0.92rem;
+  color: var(--color-texto-suave);
+  margin-bottom: 1.5rem;
+  line-height: 1.55;
+}
+
+.perfil-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radio);
+  background-color: rgba(160, 82, 45, 0.07);
+  margin-bottom: 1.25rem;
+}
+
+.perfil-metric__num {
+  font-family: var(--font-secundaria);
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: var(--color-siena);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.perfil-metric__label {
+  font-size: 0.92rem;
+  color: var(--color-texto);
+  font-weight: 500;
+}
+
+/* ── Mis Pedidos ── */
+.pedidos-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pedidos-header__title {
+  font-family: var(--font-secundaria);
+  font-size: clamp(1.8rem, 3.5vw, 2.35rem);
+  color: var(--color-siena);
+  line-height: 1.15;
+}
+
+.pedidos-header__subtitle {
+  color: var(--color-texto-suave);
+  margin-top: 0.3rem;
+}
+
+.pedidos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.pedido-card {
+  background-color: var(--color-fondo-card);
+  border: 1px solid rgba(160, 82, 45, 0.14);
+  border-radius: var(--radio-lg);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.pedido-card--skeleton {
+  height: 190px;
+  background: linear-gradient(
+    90deg,
+    var(--color-fondo-card) 25%,
+    rgba(160, 82, 45, 0.08) 50%,
+    var(--color-fondo-card) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.pedido-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(160, 82, 45, 0.12);
+}
+
+.pedido-card__orden {
+  font-family: var(--font-secundaria);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-texto);
+  letter-spacing: 0.02em;
+}
+
+.pedido-card__fecha {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.84rem;
+  color: var(--color-texto-suave);
+  margin-top: 0.2rem;
+}
+
+.pedido-estado {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.pedido-estado--confirmado {
+  background-color: rgba(135, 169, 107, 0.18);
+  color: #365222;
+}
+
+.pedido-estado--en-taller {
+  background-color: rgba(212, 164, 55, 0.22);
+  color: #705009;
+}
+
+.pedido-estado--enviado {
+  background-color: rgba(160, 82, 45, 0.16);
+  color: var(--color-siena);
+}
+
+.pedido-estado--entregado {
+  background-color: rgba(135, 169, 107, 0.28);
+  color: #264015;
+}
+
+.pedido-estado--cancelado {
+  background-color: rgba(192, 57, 43, 0.14);
+  color: #9e2a1f;
+}
+
+.pedido-card__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.pedido-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.pedido-item__img {
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  object-fit: cover;
+  background-color: #eed8be;
+  flex-shrink: 0;
+}
+
+.pedido-item__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.pedido-item__nombre {
+  font-family: var(--font-secundaria);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+.pedido-item__meta {
+  font-size: 0.84rem;
+  color: var(--color-texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+
+.pedido-item__subtotal {
+  font-weight: 700;
+  font-size: 0.96rem;
+  color: var(--color-texto);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pedido-card__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 0.95rem;
+  border-top: 1px solid rgba(160, 82, 45, 0.12);
+}
+
+.pedido-card__entrega {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.86rem;
+  color: var(--color-texto-suave);
+}
+
+.pedido-card__entrega span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pedido-card__notas {
+  font-style: italic;
+}
+
+.pedido-card__total {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.pedido-card__total-label {
+  font-size: 0.88rem;
+  color: var(--color-texto-suave);
+}
+
+.pedido-card__total-monto {
+  font-size: 1.35rem;
+  color: var(--color-siena);
+  font-variant-numeric: tabular-nums;
+}
+
+.pedidos-vacio {
+  background-color: var(--color-fondo-card);
+  border: 1px dashed rgba(160, 82, 45, 0.26);
+  border-radius: var(--radio-lg);
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.pedidos-vacio__icono {
+  color: var(--color-siena);
+  opacity: 0.8;
+}
+
+.pedidos-vacio__titulo {
+  font-family: var(--font-secundaria);
+  font-size: 1.45rem;
+  color: var(--color-texto);
+}
+
+.pedidos-vacio__texto {
+  color: var(--color-texto-suave);
+  max-width: 44ch;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 820px) {
+  .auth-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-aside {
+    padding: 2rem 1.75rem;
+  }
+
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .perfil-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 540px) {
+  .cuenta-page {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .perfil-header,
+  .perfil-card,
+  .pedido-card {
+    padding: 1.35rem;
+  }
+}
+
+/* ── Modo Oscuro ── */
+:root[data-theme='dark'] .auth-layout,
+:root[data-theme='dark'] .perfil-header,
+:root[data-theme='dark'] .perfil-card,
+:root[data-theme='dark'] .pedido-card,
+:root[data-theme='dark'] .pedidos-vacio {
+  border-color: var(--borde-sutil);
+}
+
+:root[data-theme='dark'] .cuenta-campo__input {
+  background-color: #1c1510;
+  color: var(--color-texto);
+  border-color: var(--borde-marcado);
+}
+
+:root[data-theme='dark'] .cuenta-campo__input::placeholder {
+  color: #8a7a6c;
+}
+
+:root[data-theme='dark'] .cuenta-campo__error {
+  color: #ef8276;
+}
+
+:root[data-theme='dark'] .cuenta-alerta--error {
+  background-color: rgba(239, 130, 118, 0.12);
+  color: #f4a49b;
+  border-color: rgba(239, 130, 118, 0.32);
+}
+
+:root[data-theme='dark'] .cuenta-alerta--exito {
+  background-color: rgba(163, 196, 135, 0.14);
+  color: #c2dea9;
+  border-color: rgba(163, 196, 135, 0.35);
+}
+
+:root[data-theme='dark'] .pedido-estado--confirmado,
+:root[data-theme='dark'] .pedido-estado--entregado {
+  background-color: rgba(163, 196, 135, 0.18);
+  color: #c2dea9;
+}
+
+:root[data-theme='dark'] .pedido-estado--en-taller {
+  background-color: rgba(226, 187, 94, 0.18);
+  color: #f0d082;
+}
+
+:root[data-theme='dark'] .pedido-estado--cancelado {
+  background-color: rgba(239, 130, 118, 0.16);
+  color: #f4a49b;
+}
+
+:root[data-theme='dark'] .pedido-item__img {
+  background-color: #2d2219;
+}
+
+:root[data-theme='dark'] .cuenta-btn--fantasma {
+  border-color: var(--borde-marcado);
+}
+
+:root[data-theme='dark'] .cuenta-btn--fantasma:hover:not(:disabled) {
+  border-color: #ef8276;
+  color: #ef8276;
+}
