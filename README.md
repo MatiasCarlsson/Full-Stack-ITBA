@@ -1,17 +1,42 @@
-# Hermanos Jota — E-Commerce Full Stack (Sprints 3, 4, 5 & 6)
+# Hermanos Jota — E-Commerce Full Stack (Sprints 3 a 8)
 
-Aplicación web full stack de comercio electrónico para **Hermanos Jota**, mueblería de autor con sede en San Cristóbal, Buenos Aires. Desarrollada para cumplir al 100% con los requisitos de la **Consigna de los Sprints 3, 4, 5 y 6** del curso Full Stack (Santander / ITBA).
+Aplicación web full stack de comercio electrónico para **Hermanos Jota**, mueblería de autor con sede en San Cristóbal, Buenos Aires. Desarrollada para cumplir al 100% con los requisitos de los **Sprints 3, 4, 5, 6, 7 y 8** del curso Full Stack (Santander / ITBA).
 
-- **Backend:** Node.js + Express + MongoDB Atlas + Mongoose (CRUD REST completo, protegido con clave de administración, CORS acotado, Helmet y límite de peticiones).
-- **Frontend:** React 19 + React Router DOM (enrutamiento declarativo SPA, páginas modulares, formularios controlados, carrito global, panel de administración con CRUD completo, tema claro y oscuro, y diseño editorial accesible).
+- **Backend:** Node.js + Express + MongoDB Atlas + Mongoose + `bcryptjs` + `jsonwebtoken` (CRUD de catálogo, autenticación de clientes con hashing bcrypt y JWT, middleware `requiereAuth`, registro de pedidos validados en servidor, CORS acotado, Helmet y rate limiting).
+- **Frontend:** React 19 + React Router DOM + Three.js (Context API para autenticación, carrito persistente y tema claro/oscuro; rutas protegidas `/perfil` y `/mis-pedidos`; búsqueda y ordenamiento del catálogo; escultura 3D interactiva con animación de ensamble en el hero).
 - **Gestor de paquetes:** [PNPM](https://pnpm.io/) (no se utiliza NPM para instalar dependencias).
 
 ## Integrantes
 
-| Integrante | Correo | GitHub |
-| :--- | :--- | :--- |
-| Matías Carlsson | — | [@MatiasCarlsson](https://github.com/MatiasCarlsson) |
-| Dante Lamorte | [dantelamorte@outlook.com](mailto:dantelamorte@outlook.com) | [@DanteLamorte](https://github.com/DanteLamorte) |
+| Integrante      | Correo                                                        | GitHub                                               |
+| :-------------- | :------------------------------------------------------------ | :--------------------------------------------------- |
+| Matías Carlsson | [matiascarlsson1@gmail.com](mailto:matiascarlsson1@gmail.com) | [@MatiasCarlsson](https://github.com/MatiasCarlsson) |
+| Dante Lamorte   | [dantelamorte@outlook.com](mailto:dantelamorte@outlook.com)   | [@DanteLamorte](https://github.com/DanteLamorte)     |
+
+---
+
+## Responsabilidades del equipo
+
+### Matías Carlsson — Frontend e integración full stack
+
+- Armado y organización de la aplicación frontend en React.
+- Implementación de páginas, componentes reutilizables, navegación con React Router y diseño responsive.
+- Integración del catálogo con la API REST, servicios HTTP y manejo de estados de la aplicación.
+- Implementación del carrito de compras, detalle de productos, contacto y experiencia general de usuario.
+- Integración entre frontend y backend para que el flujo de catálogo y compra funcione de extremo a extremo.
+
+### Dante Lamorte — Backend, datos, administración, seguridad y despliegue
+
+- Configuración de MongoDB Atlas, conexión de la aplicación y carga inicial del catálogo.
+- Desarrollo y mantenimiento del backend Express y sus endpoints CRUD.
+- Implementación del panel de administración para crear, editar y eliminar productos.
+- Incorporación del modo claro y oscuro, junto con sus estilos y persistencia de preferencia.
+- Aplicación de medidas de seguridad: autenticación administrativa, CORS acotado, Helmet,
+  rate limiting, sanitización de entradas y manejo centralizado de errores.
+- Preparación de la documentación y configuración necesaria para desplegar el backend y el frontend.
+
+La división resume los principales aportes de cada integrante y no limita la colaboración realizada
+durante la integración final del proyecto.
 
 ---
 
@@ -116,22 +141,26 @@ Sprint 3-4/
 
 ---
 
-## API REST — Endpoints (Sprint 5-6)
+## API REST — Endpoints (Sprints 5-8)
 
-Leer el catálogo es público. Crear, editar y eliminar exigen la cabecera `x-admin-token` con el
-valor de `ADMIN_TOKEN`: sin ella la respuesta es `401 Unauthorized`.
+Leer el catálogo es público. Modificar productos exige la cabecera `x-admin-token` (`ADMIN_TOKEN`). Las rutas de perfil y pedidos de clientes exigen `Authorization: Bearer <JWT>`.
 
 Todos los endpoints responden en formato JSON y manejan códigos de estado HTTP semánticos:
 
-| Método | Endpoint | Descripción | Respuestas HTTP |
-| :--- | :--- | :--- | :--- |
-| **GET** | `/api/productos` | Obtiene la lista completa de productos desde MongoDB Atlas | `200 OK`, `500 Internal Error` |
-| **GET** | `/api/productos/:id` | Obtiene un producto por su `_id` | `200 OK`, `400 Bad Request` (CastError), `404 Not Found`, `500` |
-| **POST**  | `/api/productos` | Crea un nuevo producto en la base de datos | `201 Created`, `400 Bad Request` (Validación), `401 Unauthorized`, `429 Too Many Requests`, `500` |
-| **PUT**  | `/api/productos/:id` | Actualiza los datos de un producto existente | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
-| **DELETE**  | `/api/productos/:id` | Elimina un producto por su `_id` | `200 OK`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `429`, `500` |
-
- key = requiere la cabecera `x-admin-token`.
+| Método     | Endpoint                  | Descripción                                                | Acceso / Respuestas HTTP                                                                          |
+| :--------- | :------------------------ | :--------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
+| **GET**    | `/api/productos`          | Obtiene la lista completa de productos desde MongoDB Atlas | Público · `200 OK`, `500`                                                                         |
+| **GET**    | `/api/productos/:id`      | Obtiene un producto por su `_id`                           | Público · `200 OK`, `400`, `404`, `500`                                                           |
+| **POST**   | `/api/productos`          | Crea un nuevo producto en la base de datos                 | Admin (`x-admin-token`) · `201`, `400`, `401`, `429`                                              |
+| **PUT**    | `/api/productos/:id`      | Actualiza los datos de un producto existente               | Admin (`x-admin-token`) · `200`, `400`, `401`, `404`, `429`                                       |
+| **DELETE** | `/api/productos/:id`      | Elimina un producto por su `_id`                           | Admin (`x-admin-token`) · `200`, `400`, `401`, `404`, `429`                                       |
+| **POST**   | `/api/auth/registro`      | Registra un cliente (password hasheado con `bcryptjs`)     | Público (rate-limited) · `201 Created`, `400`, `409 Conflict`, `429`                              |
+| **POST**   | `/api/auth/login`         | Valida credenciales y emite un JWT firmado                 | Público (rate-limited) · `200 OK`, `400`, `401`, `429`                                            |
+| **GET**    | `/api/auth/perfil`        | Devuelve perfil y métricas del usuario autenticado         | JWT (`Authorization: Bearer`) · `200 OK`, `401`                                                   |
+| **PUT**    | `/api/auth/perfil`        | Actualiza nombre, teléfono y dirección del cliente         | JWT (`Authorization: Bearer`) · `200 OK`, `400`, `401`                                            |
+| **POST**   | `/api/pedidos`            | Registra un pedido validando precios y stock en servidor   | JWT (`Authorization: Bearer`) · `201 Created`, `400`, `401`, `404`, `409`                         |
+| **GET**    | `/api/pedidos/mis-pedidos`| Historial de pedidos del usuario autenticado               | JWT (`Authorization: Bearer`) · `200 OK`, `401`                                                   |
+| **GET**    | `/api/pedidos/:id`        | Detalle de un pedido verificando pertenencia al usuario    | JWT (`Authorization: Bearer`) · `200 OK`, `401`, `403`, `404`                                     |
 
 ### Modelo de Datos Mongoose (`Producto`)
 
@@ -153,16 +182,20 @@ Todos los endpoints responden en formato JSON y manejan códigos de estado HTTP 
 
 ## Rutas del Frontend (React Router DOM)
 
-| Ruta | Componente / Página | Descripción |
-| :--- | :--- | :--- |
-| `/` | `InicioPage` | Hero section de presentación artesanal + listado de productos |
-| `/productos` | `CatalogoPage` | Catálogo de muebles con selector de categorías |
-| `/productos/:id` | `DetallePage` | Ficha técnica individual cargada dinámicamente mediante `useParams()` |
-| `/contacto` | `ContactoPage` | Formulario de contacto y asesoramiento del taller |
-| `/admin` | `AdminPage` | Panel con el catálogo completo: editar y eliminar cada pieza |
-| `/admin/crear-producto` | `CrearProductoPage` | Formulario de alta (POST a `/api/productos`) |
-| `/admin/editar-producto/:id` | `EditarProductoPage` | Edición de una pieza, leída con `useParams()` (PUT) |
-| `*` | Ruta 404 | Página de captura de errores de navegación con enlace al inicio |
+| Ruta                         | Componente / Página  | Descripción                                                                |
+| :--------------------------- | :------------------- | :------------------------------------------------------------------------- |
+| `/`                          | `InicioPage`         | Hero editorial con escultura 3D en Three.js + catálogo filtrable           |
+| `/productos`                 | `CatalogoPage`       | Catálogo de muebles con búsqueda diferida, ordenamiento y categorías       |
+| `/productos/:id`             | `DetallePage`        | Ficha técnica individual cargada dinámicamente mediante `useParams()`      |
+| `/contacto`                  | `ContactoPage`       | Formulario de contacto y asesoramiento del taller                          |
+| `/registro`                  | `RegistroPage`       | Alta de clientes con medidor de seguridad y persistencia de JWT            |
+| `/login`                     | `LoginPage`          | Inicio de sesión con redirección automática al destino o checkout          |
+| `/perfil`                    | `PerfilPage`         | **Ruta protegida:** datos de contacto, entrega y cierre de sesión          |
+| `/mis-pedidos`               | `MisPedidosPage`     | **Ruta protegida:** historial de pedidos confirmados a nombre del cliente  |
+| `/admin`                     | `AdminPage`          | Panel con el catálogo completo: editar y eliminar cada pieza               |
+| `/admin/crear-producto`      | `CrearProductoPage`  | Formulario de alta (POST a `/api/productos`)                               |
+| `/admin/editar-producto/:id` | `EditarProductoPage` | Edición de una pieza, leída con `useParams()` (PUT)                        |
+| `*`                          | `NotFoundPage`       | Página 404 personalizada con enlace al inicio                              |
 
 Las tres rutas de `/admin` piden la clave de administración antes de mostrarse. Esa pantalla es
 comodidad: quien decide de verdad es la API, que rechaza toda escritura sin la cabecera.
@@ -187,6 +220,11 @@ ADMIN_TOKEN=
 # Orígenes que pueden llamar a la API desde un navegador, separados por coma.
 # En desarrollo podés dejarla vacía: cualquier origen local pasa igual.
 ORIGENES_PERMITIDOS=http://localhost:3000
+
+# Secreto para firmar y verificar los JWT de clientes (Sprint 7-8).
+# Generá uno con:  node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+JWT_SECRET=
+JWT_EXPIRES_IN=7d
 ```
 
 ### 2. Iniciar el Backend (Express + MongoDB)
@@ -253,8 +291,9 @@ pnpm run build
 3. En **Environment Variables**:
    - `MONGODB_URI`: Cadena de conexión de MongoDB Atlas.
    - `NODE_ENV`: `production`
-   - `ADMIN_TOKEN`: la clave que exigirá la API para escribir. **Sin esto, el panel de admin no
-     puede guardar nada.**
+   - `ADMIN_TOKEN`: la clave que exigirá la API para escribir productos.
+   - `JWT_SECRET`: clave secreta larga y aleatoria para firmar los JWT de clientes (**obligatoria en producción**).
+   - `JWT_EXPIRES_IN`: duración de los tokens (por defecto `7d`).
    - `ORIGENES_PERMITIDOS`: `https://full-stack-itba-ecru.vercel.app`. **Sin esto, con
      `NODE_ENV=production` el navegador rechaza todas las llamadas del frontend.**
 4. Guardar y desplegar. Obtendrás una URL como `https://full-stack-itba.onrender.com`.
@@ -268,6 +307,17 @@ pnpm run build
 3. En **Environment Variables**:
    - `REACT_APP_API_URL`: URL del backend en Render (ej: `https://full-stack-itba.onrender.com`).
 4. Desplegar. Vercel gestionará el build estático y el enrutamiento client-side.
+
+### Acceso al panel de administración
+
+El panel de administración está disponible en:
+
+- **Producción:** [https://full-stack-itba-ecru.vercel.app/admin](https://full-stack-itba-ecru.vercel.app/admin)
+- **Local:** [http://localhost:3000/admin](http://localhost:3000/admin)
+
+Desde allí se puede consultar el catálogo y acceder a las operaciones de alta, edición y eliminación.
+La pantalla solicita la clave de administración configurada en `ADMIN_TOKEN`; esa clave no debe
+publicarse en el repositorio ni en esta documentación.
 
 ---
 
@@ -291,15 +341,15 @@ mínimo de la WCAG.
 
 ---
 
-##  Seguridad de la API
+## Seguridad de la API
 
-| Defensa | Qué resuelve |
-| :--- | :--- |
-| `requiereAdmin` | `POST`, `PUT` y `DELETE` exigen la cabecera `x-admin-token`. Antes, un `DELETE` sin credenciales llegaba al controlador y respondía `404`: el servidor buscaba el producto antes de preguntarse quién pedía borrarlo. |
-| CORS por lista | `app.use(cors())` respondía con el comodín `*`, así que cualquier sitio podía llamar a la API desde el navegador de un visitante. Ahora la lista sale de `ORIGENES_PERMITIDOS`. |
-| Helmet | Cabeceras defensivas y baja del `x-powered-by: Express`, que anunciaba la tecnología del servidor. |
-| Rate limiting | 300 peticiones cada 15 minutos en general y 20 para escrituras. Frena la prueba de claves por fuerza bruta y protege el `express.json({ limit: '12mb' })` que necesitan las imágenes en Data URL. |
-| Limpieza del cuerpo | Se descartan las claves que empiezan con `$` o tienen puntos, que Mongo interpretaría como operadores dentro de un `findByIdAndUpdate`. |
+| Defensa             | Qué resuelve                                                                                                                                                                                                          |
+| :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `requiereAdmin`     | `POST`, `PUT` y `DELETE` exigen la cabecera `x-admin-token`. Antes, un `DELETE` sin credenciales llegaba al controlador y respondía `404`: el servidor buscaba el producto antes de preguntarse quién pedía borrarlo. |
+| CORS por lista      | `app.use(cors())` respondía con el comodín `*`, así que cualquier sitio podía llamar a la API desde el navegador de un visitante. Ahora la lista sale de `ORIGENES_PERMITIDOS`.                                       |
+| Helmet              | Cabeceras defensivas y baja del `x-powered-by: Express`, que anunciaba la tecnología del servidor.                                                                                                                    |
+| Rate limiting       | 300 peticiones cada 15 minutos en general y 20 para escrituras. Frena la prueba de claves por fuerza bruta y protege el `express.json({ limit: '12mb' })` que necesitan las imágenes en Data URL.                     |
+| Limpieza del cuerpo | Se descartan las claves que empiezan con `$` o tienen puntos, que Mongo interpretaría como operadores dentro de un `findByIdAndUpdate`.                                                                               |
 
 La comparación de la clave es en tiempo constante, para que el tiempo de respuesta no filtre
 cuánto del token se acertó.
