@@ -5,15 +5,18 @@
 // Uso: pnpm run dev:memoria
 
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 // Valores de desarrollo. Se definen antes de requerir la app, porque la capa de seguridad
 // lee las variables de entorno al cargarse.
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 process.env.ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin-local';
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'jwt-secreto-desarrollo-hermanos-jota';
 
 const app = require('../src/app');
 const Producto = require('../src/models/Producto');
+const Usuario = require('../src/models/Usuario');
 const semilla = require('./catalogo-semilla');
 
 const PORT = process.env.PORT || 3001;
@@ -23,8 +26,20 @@ async function iniciar() {
   await mongoose.connect(mongo.getUri());
   await Producto.insertMany(semilla);
 
+  // Usuario cliente de prueba listo para explorar /perfil y /mis-pedidos
+  const passwordHash = await bcrypt.hash('Taller2026!', 10);
+  await Usuario.create({
+    nombre: 'Clara Mendoza',
+    email: 'cliente@hermanosjota.com.ar',
+    passwordHash,
+    rol: 'cliente',
+    telefono: '+54 11 4567-8900',
+    direccion: 'Av. San Juan 2847, CABA',
+  });
+
   console.log(`🌱 MongoDB en memoria lista con ${semilla.length} piezas.`);
   console.log(`🔑 Clave de administración: ${process.env.ADMIN_TOKEN}`);
+  console.log('👤 Cliente demo: cliente@hermanosjota.com.ar / Taller2026!');
 
   const servidor = app.listen(PORT, () => {
     console.log(`🪵  API de Hermanos Jota en http://localhost:${PORT}`);

@@ -1,9 +1,12 @@
 // components/index.js
-// Barrel export para unificar importaciones de componentes
+// Barrel export unificado (para conveniencia en tests; las páginas importan directo para tree-shaking)
 
 // Layout
 export { default as Navbar } from './layout/Navbar';
 export { default as Footer } from './layout/Footer';
+
+// Auth
+export { default as RutaProtegida } from './auth/RutaProtegida';
 
 // Products
 export { default as ProductCard } from './products/ProductCard';

@@ -22,7 +22,13 @@ async function startServer() {
     console.log('   GET    /api/productos/:id');
     console.log('   POST   /api/productos');
     console.log('   PUT    /api/productos/:id');
-    console.log('   DELETE /api/productos/:id\n');
+    console.log('   DELETE /api/productos/:id');
+    console.log('   POST   /api/auth/registro');
+    console.log('   POST   /api/auth/login');
+    console.log('   GET    /api/auth/perfil');
+    console.log('   PUT    /api/auth/perfil');
+    console.log('   POST   /api/pedidos');
+    console.log('   GET    /api/pedidos/mis-pedidos\n');
   });
 
   // 3. Manejo de cierre elegante (Graceful Shutdown)

@@ -77,6 +77,19 @@ const limiteEscritura = rateLimit({
   message: { error: 'Demasiados intentos', mensaje: 'Esperá unos minutos y volvé a intentar.' },
 });
 
+// Techo específico para registro e inicio de sesión: frena ataques de fuerza bruta sobre
+// contraseñas sin bloquear el uso normal de clientes reales.
+const limiteAuth = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 30,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: {
+    error: 'Demasiados intentos de acceso',
+    mensaje: 'Esperá unos minutos antes de volver a intentar.',
+  },
+});
+
 // ── Limpieza del cuerpo ─────────────────────────────────────────────────────────
 // Mongo interpreta como operadores las claves que empiezan con "$", y los puntos navegan
 // campos anidados. Si eso llega crudo a un findByIdAndUpdate, el cuerpo de la petición deja
@@ -119,6 +132,13 @@ function avisarConfiguracion() {
         'responder 500 hasta que se configure.'
     );
   }
+
+  if (enProduccion && !process.env.JWT_SECRET) {
+    console.warn(
+      '⚠️  [seguridad] JWT_SECRET no está definida en producción: el registro y el login ' +
+        'responderán 500 hasta que se configure.'
+    );
+  }
 }
 
 /**
@@ -141,4 +161,4 @@ function aplicarSeguridad(app) {
   avisarConfiguracion();
 }
 
-module.exports = { aplicarSeguridad, limiteEscritura, sanitizarCuerpo };
+module.exports = { aplicarSeguridad, limiteEscritura, limiteAuth, sanitizarCuerpo };

@@ -6,12 +6,14 @@
 process.env.NODE_ENV = 'production';
 process.env.ORIGENES_PERMITIDOS = 'https://full-stack-itba-ecru.vercel.app,http://localhost:3000';
 process.env.ADMIN_TOKEN = 'clave-de-prueba-123';
+process.env.JWT_SECRET = 'jwt-secreto-de-pruebas-seguridad-2026';
 
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const app = require('../src/app');
 const Producto = require('../src/models/Producto');
+const Usuario = require('../src/models/Usuario');
 
 let ok = 0;
 let fallos = 0;
@@ -180,6 +182,119 @@ const chequear = (titulo, condicion, detalle) => {
     chequear('no quedó destacado por el $set', limpio.destacado === false);
     chequear('y conservó los datos buenos', limpio.nombre === 'Mesa limpia' && limpio.precio === 1000);
     await pedir(`/api/productos/${limpio._id}`, { method: 'DELETE', headers: CLAVE });
+
+    console.log('\n== Autenticación JWT + bcrypt y Pedidos (Sprint 7-8) ==');
+    const perfilSinJwt = await pedir('/api/auth/perfil');
+    chequear('GET /api/auth/perfil sin JWT da 401', perfilSinJwt.status === 401, 'status ' + perfilSinJwt.status);
+
+    const pedidoSinJwt = await pedir('/api/pedidos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: [{ productoId: semilla._id, cantidad: 1 }] }),
+    });
+    chequear('POST /api/pedidos sin JWT da 401', pedidoSinJwt.status === 401, 'status ' + pedidoSinJwt.status);
+
+    const regA = await pedir('/api/auth/registro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: 'Sofía Artesana',
+        email: 'sofia@ejemplo.com',
+        password: 'PasswordSegura123',
+        rol: 'admin', // Intento de escalada de privilegios: debe ser ignorado
+      }),
+    });
+    const regAJson = await regA.json();
+    chequear('POST /api/auth/registro crea cuenta con 201', regA.status === 201, 'status ' + regA.status);
+    chequear('devuelve token JWT y nunca el passwordHash',
+      Boolean(regAJson.token) && regAJson.usuario && !('passwordHash' in regAJson.usuario));
+    chequear('ignora intento de escalar rol a admin', regAJson.usuario?.rol === 'cliente');
+
+    const usuarioEnDb = await Usuario.findOne({ email: 'sofia@ejemplo.com' }).select('+passwordHash');
+    chequear('guarda la contraseña hasheada con bcrypt (no texto plano)',
+      Boolean(usuarioEnDb?.passwordHash) &&
+        usuarioEnDb.passwordHash !== 'PasswordSegura123' &&
+        usuarioEnDb.passwordHash.startsWith('$2'));
+
+    const regDuplicado = await pedir('/api/auth/registro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: 'Otra Sofía',
+        email: 'SOFIA@ejemplo.com',
+        password: 'PasswordSegura123',
+      }),
+    });
+    chequear('registro con email duplicado da 409', regDuplicado.status === 409, 'status ' + regDuplicado.status);
+
+    const loginMalo = await pedir('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'sofia@ejemplo.com', password: 'incorrecta' }),
+    });
+    chequear('login con contraseña incorrecta da 401', loginMalo.status === 401, 'status ' + loginMalo.status);
+
+    const loginOk = await pedir('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'sofia@ejemplo.com', password: 'PasswordSegura123' }),
+    });
+    const loginOkJson = await loginOk.json();
+    chequear('login válido devuelve 200 y JWT', loginOk.status === 200 && Boolean(loginOkJson.token));
+
+    const AUTH_A = {
+      Authorization: `Bearer ${loginOkJson.token}`,
+      'Content-Type': 'application/json',
+    };
+
+    const perfilOk = await pedir('/api/auth/perfil', { headers: AUTH_A });
+    const perfilOkJson = await perfilOk.json();
+    chequear('GET /api/auth/perfil con JWT devuelve el usuario',
+      perfilOk.status === 200 && perfilOkJson.usuario?.email === 'sofia@ejemplo.com');
+
+    // Crea pedido intentando falsificar el precio desde el cliente (precioUnitario: 1)
+    const pedidoOk = await pedir('/api/pedidos', {
+      method: 'POST',
+      headers: AUTH_A,
+      body: JSON.stringify({
+        items: [{ productoId: semilla._id, cantidad: 2, precioUnitario: 1 }],
+        direccionEntrega: 'Av. San Juan 2847',
+      }),
+    });
+    const pedidoOkJson = await pedidoOk.json();
+    chequear('POST /api/pedidos autenticado crea pedido con 201', pedidoOk.status === 201, 'status ' + pedidoOk.status);
+    chequear('calcula el total real en servidor ignorando precio del cliente',
+      pedidoOkJson.pedido?.total === 2000, 'total ' + pedidoOkJson.pedido?.total);
+
+    const productoTrasCompra = await Producto.findById(semilla._id);
+    chequear('descuenta stock del producto tras el pedido',
+      productoTrasCompra.stock === 1, 'stock ' + productoTrasCompra.stock);
+
+    const misPedidos = await pedir('/api/pedidos/mis-pedidos', { headers: AUTH_A });
+    const misPedidosJson = await misPedidos.json();
+    chequear('GET /api/pedidos/mis-pedidos devuelve los pedidos propios',
+      misPedidos.status === 200 && misPedidosJson.pedidos?.length === 1);
+
+    // Usuario B no puede consultar el pedido de Usuario A
+    const regB = await pedir('/api/auth/registro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: 'Martín Cliente',
+        email: 'martin@ejemplo.com',
+        password: 'OtraPassword123',
+      }),
+    });
+    const regBJson = await regB.json();
+    const AUTH_B = { Authorization: `Bearer ${regBJson.token}` };
+
+    const pedidoAjeno = await pedir(`/api/pedidos/${pedidoOkJson.pedido._id}`, { headers: AUTH_B });
+    chequear('un usuario no puede ver pedidos ajenos (403)', pedidoAjeno.status === 403, 'status ' + pedidoAjeno.status);
+
+    const pedidosB = await pedir('/api/pedidos/mis-pedidos', { headers: AUTH_B });
+    const pedidosBJson = await pedidosB.json();
+    chequear('mis-pedidos de usuario B está aislado (0 pedidos)',
+      pedidosB.status === 200 && pedidosBJson.pedidos?.length === 0);
 
     console.log(`\nchequeos ok: ${ok}`);
     if (fallos > 0) console.log(`FALLARON: ${fallos}`);

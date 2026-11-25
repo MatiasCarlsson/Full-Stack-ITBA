@@ -1,4 +1,4 @@
-/* App.css — Layout principal */
+/* App.css — Layout principal y Hero editorial asimétrico */
 
 .app {
   display: flex;
@@ -8,61 +8,147 @@
 
 .app__main {
   flex: 1;
-  padding: 2rem 1rem;
+  padding: 2.25rem 1.25rem 3.5rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* ── Sección hero ── */
+/* ── Sección Hero editorial asimétrica ── */
 .hero {
-  text-align: center;
-  padding: 3.5rem 1rem 2rem;
-  background: linear-gradient(135deg, var(--color-alabastro) 0%, #EED8BE 100%);
-  border-bottom: 1px solid rgba(160,82,45,0.15);
-  margin-bottom: 2.5rem;
+  background: linear-gradient(155deg, var(--color-alabastro) 0%, #ecd6bc 100%);
+  border-bottom: 1px solid rgba(160, 82, 45, 0.15);
+  margin-bottom: 1.5rem;
+  padding: clamp(2.25rem, 5vw, 4rem) 1.25rem;
 }
 
-.hero__eyebrow {
+.hero__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.hero__copy {
+  text-align: left;
+  animation: heroReveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero__origen {
   font-family: var(--font-primaria);
   font-weight: 500;
-  font-size: 0.78rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-size: 0.9rem;
   color: var(--color-verde-salvia);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .hero__title {
   font-family: var(--font-secundaria);
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(2.35rem, 4.8vw, 3.75rem);
   font-weight: 700;
   color: var(--color-siena);
-  letter-spacing: 0.05em;
-  margin-bottom: 1rem;
-  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.1rem;
+  line-height: 1.08;
+  max-width: 14ch;
 }
 
 .hero__subtitle {
-  font-size: 1.05rem;
+  font-size: 1.06rem;
   color: var(--color-texto-suave);
+  max-width: 48ch;
+  line-height: 1.65;
+  margin-bottom: 1.75rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-bottom: 2.25rem;
+}
+
+.hero__btn-primary,
+.hero__btn-secondary {
+  flex: 0 1 auto;
+  padding: 0.78rem 1.45rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.hero__highlights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(160, 82, 45, 0.18);
   max-width: 520px;
-  margin: 0 auto;
-  font-weight: 300;
+}
+
+.hero__highlights dt {
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+  margin-bottom: 0.15rem;
+}
+
+.hero__highlights dd {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.hero__media {
+  width: 100%;
+}
+
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 880px) {
+  .hero__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__title {
+    max-width: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero__highlights {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
 }
 
 /* ── Página de detalle wrapper ── */
 .detalle-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 1.25rem;
+  width: 100%;
+  flex: 1;
 }
 
 /* ── Página de contacto wrapper ── */
 .contacto-wrapper {
   max-width: 700px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 1.25rem;
+  width: 100%;
+  flex: 1;
 }
 
 .contacto-wrapper h2 {

@@ -1,14 +1,12 @@
 // pages/CatalogoPage.jsx
-// Página /productos — catálogo de productos sin hero section
-import { ProductList } from '../components';
+// Página /productos — catálogo completo con búsqueda, filtros y ordenamiento
 
-function CatalogoPage({ onVerDetalle, onAgregarAlCarrito }) {
+import ProductList from '../components/products/ProductList';
+
+function CatalogoPage() {
   return (
     <main className="app__main">
-      <ProductList
-        onVerDetalle={onVerDetalle}
-        onAgregarAlCarrito={onAgregarAlCarrito}
-      />
+      <ProductList />
     </main>
   );
 }
